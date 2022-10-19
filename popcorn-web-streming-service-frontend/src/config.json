@@ -1,0 +1,10 @@
+{
+    "api": {
+        "auth": "http://localhost:7000/api/auth",
+        "movies": "http://localhost:7000/api/movies",
+        "webseries": "http://localhost:7000/api/webseries"
+    },
+    "mail": {
+        "url": "http://localhost:3000/verify"
+    }
+}
