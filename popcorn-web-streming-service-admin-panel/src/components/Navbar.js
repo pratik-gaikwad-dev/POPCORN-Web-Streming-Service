@@ -8,11 +8,11 @@ const Navbar = () => {
     const menuid = document.getElementById("menu");
     if (menu.menu === true) {
       menuid.style.display = "inline";
-      menu.setMenu(false)
+      menu.setMenu(false);
     }
     if (menu.menu === false) {
       menuid.style.display = "none";
-      menu.setMenu(true)
+      menu.setMenu(true);
     }
   };
   return (

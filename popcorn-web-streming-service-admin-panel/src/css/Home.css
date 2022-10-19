@@ -1,33 +1,33 @@
 .grid-items {
-    display: flex;
+  display: flex;
 }
 .grid-item-1 {
-    width: 20%;
+  width: 20%;
 }
 .grid-item-2 {
-    width: 85%;
+  width: 85%;
 }
 .fa-bars {
-    display: none;
+  display: none;
 }
 @media only screen and (max-width: 1184px) {
-    .grid-item-1 {
-        width: 30%;
-    }
+  .grid-item-1 {
+    width: 30%;
   }
+}
 @media only screen and (max-width: 744px) {
-    .grid-item-1 {
-        width: 40%;
-    }
+  .grid-item-1 {
+    width: 40%;
   }
+}
 @media only screen and (max-width: 500px) {
-    #menu {
-        display: none;
-    }
-    .grid-item-2 {
-        width: 100%
-    }
-    .fa-bars {
-        display: inline;
-    }
+  #menu {
+    display: none;
   }
+  .grid-item-2 {
+    width: 100%;
+  }
+  .fa-bars {
+    display: inline;
+  }
+}

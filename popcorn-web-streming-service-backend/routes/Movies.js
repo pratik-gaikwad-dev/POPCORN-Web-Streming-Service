@@ -63,12 +63,12 @@ router.post("/getallmovies", (req, res) => {
 
 router.get("/getmoviebyslug/:slug", async (req, res) => {
   try {
-    const movie = await Movies.findOne({slug: req.params.slug});
-    
-    if(!movie) {
-      return res.status(404).json({msg: "Movie not found"})
+    const movie = await Movies.findOne({ slug: req.params.slug });
+
+    if (!movie) {
+      return res.status(404).json({ msg: "Movie not found" });
     }
-    res.send(movie)
+    res.send(movie);
   } catch (error) {
     res.send(error);
   }
@@ -76,13 +76,16 @@ router.get("/getmoviebyslug/:slug", async (req, res) => {
 
 router.post("/getrecommendation", async (req, res) => {
   try {
-    const data = req.body
-    const movie = await Movies.find({genre: data.genre, _id: {$ne: data.id}});
-    console.log(data)
-    if(!movie) {
-      return res.status(404).json({msg: "Movie not found"})
+    const data = req.body;
+    const movie = await Movies.find({
+      genre: data.genre,
+      _id: { $ne: data.id },
+    });
+    console.log(data);
+    if (!movie) {
+      return res.status(404).json({ msg: "Movie not found" });
     }
-    res.json(movie)
+    res.json(movie);
   } catch (error) {
     res.send(error);
   }

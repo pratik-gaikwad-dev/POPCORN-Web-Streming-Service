@@ -240,11 +240,7 @@ const AddWebSeriesForm = () => {
                 <button
                   type="submit"
                   className="btn btn-primary mt-3"
-                  disabled={
-                    imagePercentages !== 100
-                      ? "disabled"
-                      : ""
-                  }
+                  disabled={imagePercentages !== 100 ? "disabled" : ""}
                 >
                   Submit
                 </button>

@@ -141,11 +141,13 @@ router.get("/getwebseriesbyslug/:slug", async (req, res) => {
   }
 });
 
-
 router.post("/getepisodes", async (req, res) => {
   try {
-    const data = req.body
-    const movie = await Episode.find({ season: data.season, seriesname: data.seriesname });
+    const data = req.body;
+    const movie = await Episode.find({
+      season: data.season,
+      seriesname: data.seriesname,
+    });
 
     if (!movie) {
       return res.status(404).json({ msg: "Web Series not found" });
@@ -157,7 +159,7 @@ router.post("/getepisodes", async (req, res) => {
 });
 router.post("/getepisode", async (req, res) => {
   try {
-    const data = req.body
+    const data = req.body;
     const movie = await Episode.findOne({ slug: data.slug });
     console.log(data);
     console.log(movie);

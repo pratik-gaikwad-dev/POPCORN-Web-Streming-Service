@@ -114,7 +114,7 @@ const AddMovieForm = () => {
       description: moviedesc,
       tags: movietags,
       slug: movieslug,
-      industry: industry
+      industry: industry,
     };
     try {
       const res = await axios.post(
@@ -132,7 +132,7 @@ const AddMovieForm = () => {
     } catch (error) {}
   };
   console.log(message);
-  if(message !== null){
+  if (message !== null) {
     setTimeout(() => {
       setMessage(null);
     }, 5000);
@@ -141,7 +141,7 @@ const AddMovieForm = () => {
     <>
       <div className="grid-main">
         <div className="grid-items">
-          <div className="grid-item-1" id='menu'>
+          <div className="grid-item-1" id="menu">
             <Sidebar />
           </div>
           <div className="grid-item-2">
@@ -150,9 +150,11 @@ const AddMovieForm = () => {
             <div className="add-movie-form-main">
               <h1>Add Movie</h1>
               <div className="mb-3">
-              {message === null ? null : <div className="alert alert-success" role="alert">
-                Message - {message}
-              </div>}
+                {message === null ? null : (
+                  <div className="alert alert-success" role="alert">
+                    Message - {message}
+                  </div>
+                )}
               </div>
               <form
                 onSubmit={onSubmitMovie}
@@ -269,16 +271,16 @@ const AddMovieForm = () => {
                   />
                 </div>
                 <div className="mb-3">
-                <select
-                  className="form-select"
-                  id="movie-industry"
-                  aria-label="Default select example"
-                  required
-                >
-                  <option defaultValue>Industry Name</option>
-                  <option value="Hollywood">Hollywood</option>
-                  <option value="Bollywood">Bollywood</option>
-                </select>
+                  <select
+                    className="form-select"
+                    id="movie-industry"
+                    aria-label="Default select example"
+                    required
+                  >
+                    <option defaultValue>Industry Name</option>
+                    <option value="Hollywood">Hollywood</option>
+                    <option value="Bollywood">Bollywood</option>
+                  </select>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="formName" className="form-label">

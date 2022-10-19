@@ -7,10 +7,10 @@ const MessageState = (props) => {
   const showMessage = (type, message) => {
     setMessageType(type);
     setMessage(message);
-  }
-  if(message !== null){
+  };
+  if (message !== null) {
     setTimeout(() => {
-        setMessage(null);
+      setMessage(null);
     }, 3000);
   }
   return (

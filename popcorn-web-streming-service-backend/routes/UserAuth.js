@@ -23,7 +23,7 @@ router.post(
     // Express validator throws error if values are not matching.
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array()});
+      return res.status(400).json({ errors: errors.array() });
     }
     // Destructuring getting email and password from req.body .
     const { email, password } = req.body;
@@ -114,7 +114,9 @@ router.post(
 
       // Signing authtoken
       const authtoken = jwt.sign(data, JWT_SECRET);
-      res.status(200).json({ authtoken: authtoken, authkey: authkay, userid: data.id });
+      res
+        .status(200)
+        .json({ authtoken: authtoken, authkey: authkay, userid: data.id });
     } catch (error) {
       res.status(500).json({ msg: "Internal server error." });
     }
@@ -143,28 +145,28 @@ router.post("/sendmail", async (req, res) => {
     // getting user id
     const data = req.body;
     // Finding user by id without password
-    console.log(data)
+    console.log(data);
     let user = await User.findById(data.user).select("-password");
-    console.log(user)
+    console.log(user);
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
         user: config.email.id,
-        pass: config.email.password
-      }
+        pass: config.email.password,
+      },
     });
 
     var mailOptions = {
       from: config.email.id,
       to: user.email,
-      subject: 'Popcorn Account Verify',
-      text: `${data.message}/${user.authkey}`
+      subject: "Popcorn Account Verify",
+      text: `${data.message}/${user.authkey}`,
     };
-    transporter.sendMail(mailOptions, function(error, info){
+    transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         res.send(error);
       } else {
-        res.send("email sent")
+        res.send("email sent");
       }
     });
   } catch (error) {
@@ -178,12 +180,12 @@ router.post("/markverified", async (req, res) => {
     const data = req.body;
     console.log(data);
     // Finding user by id without password
-    let user = await User.findOne({authkey: data.key});
-    console.log(user)
+    let user = await User.findOne({ authkey: data.key });
+    console.log(user);
     user instanceof User;
     user.verified = true;
     await user.save();
-    res.send({msg: "Account Verified"});
+    res.send({ msg: "Account Verified" });
   } catch (error) {
     res.status(500).send("Internal server error");
   }

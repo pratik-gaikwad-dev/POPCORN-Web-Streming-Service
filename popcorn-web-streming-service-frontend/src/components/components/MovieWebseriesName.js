@@ -23,12 +23,17 @@ const MovieWebseriesName = (props) => {
         </div>
         <div className="watch-movie-name name-right-side">
           <div className="watch-movie-likes">
-            <i className="fa-solid fa-thumbs-up fa-2xl" style={{cursor: "pointer"}}></i>
+            <i
+              className="fa-solid fa-thumbs-up fa-2xl"
+              style={{ cursor: "pointer" }}
+            ></i>
             <br />
             &nbsp;&nbsp;1+
           </div>
           <div className="watch-movie-likes">
-             <p>100<h4>Views</h4></p>
+            <p>
+              100<h4>Views</h4>
+            </p>
           </div>
         </div>
       </div>

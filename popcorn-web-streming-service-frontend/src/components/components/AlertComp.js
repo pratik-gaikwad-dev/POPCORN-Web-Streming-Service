@@ -4,10 +4,8 @@ import React from "react";
 const AlertComp = (props) => {
   return (
     <>
-      <div className="alert-box" style={{paddingBottom: "10px"}}>
-        <Alert severity={`${props.type}`}>
-          {props.message}
-        </Alert>
+      <div className="alert-box" style={{ paddingBottom: "10px" }}>
+        <Alert severity={`${props.type}`}>{props.message}</Alert>
       </div>
     </>
   );
