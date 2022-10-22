@@ -49,13 +49,13 @@ router.post("/uploadmovie", (req, res) => {
 
 router.post("/getallmovies", (req, res) => {
   try {
-    Movies.find({}, (err, movies) => {
+    Movies.find({}, {},(err, movies) => {
       if (!err) {
         res.send(movies);
       } else {
         res.send(err);
       }
-    });
+    }).sort({_id: -1});
   } catch (error) {
     res.send(error);
   }

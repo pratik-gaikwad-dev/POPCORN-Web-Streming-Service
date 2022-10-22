@@ -47,7 +47,7 @@ router.post("/uploadwebseries", (req, res) => {
   }
 });
 
-router.post("/uploadepisodes", (req, res) => {
+router.post("/uploadepisodes", async (req, res) => {
   try {
     if (req.body.name === null) {
       return res.status(400).json({ msg: "Name should not be empty" });
@@ -70,6 +70,12 @@ router.post("/uploadepisodes", (req, res) => {
     if (req.body.slug === null) {
       return res.status(400).json({ msg: "slug should not be empty" });
     }
+    const slug = req.body.slug;
+    const web = await Episode.findOne({ slug: slug });
+    if (web) {
+      return res.status(400).json({ msg: "slug is used" });
+    }
+
     const movie = new Episode({
       name: req.body.name,
       seriesname: req.body.seriesname,
@@ -108,7 +114,7 @@ router.post("/getallwebseries", (req, res) => {
       } else {
         res.send(err);
       }
-    });
+    }).sort({_id: -1});
   } catch (error) {
     res.send(err);
   }

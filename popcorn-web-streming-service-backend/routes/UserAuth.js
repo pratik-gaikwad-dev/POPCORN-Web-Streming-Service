@@ -61,6 +61,76 @@ router.post(
   }
 );
 
+router.post(
+  "/adminlogin",
+  [
+    // Express validator validations.
+    body("email", "Enter valid email.").isEmail(),
+    body("password", "Password cannot be blank.").exists(),
+  ],
+  async (req, res) => {
+    // Express validator throws error if values are not matching.
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    // Destructuring getting email and password from req.body .
+    const { email, password } = req.body;
+    let useremail = email.toLowerCase();
+    try {
+      // Fetching user from databse.
+      let user = await User.findOne({ email: useremail });
+      if (!user) {
+        return res
+          .status(401)
+          .json({ error: "Please try to login with correct credentials." });
+      }
+
+      // Comparing password using bcryptjs.
+      const passwordCompare = await bcrypt.compare(password, user.password);
+      if (!passwordCompare) {
+        return res
+          .status(401)
+          .json({ error: "Please try to login with correct credentials." });
+      }
+
+      if (!user.admin) {
+        return res
+          .status(401)
+          .json({ error: "Please try to login with correct credentials." });
+      }
+
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
+      // Compare authentication token using "jsonwebtoken".
+      const authtoken = jwt.sign(data, JWT_SECRET);
+      let usersend = await User.findById(data.user.id).select("-password");
+      // Sending authentication token to user.
+      res.json({ authtoken: authtoken, user: usersend, userid: data.user.id });
+    } catch (error) {
+      res.status(500).send("Internal server error");
+    }
+  }
+);
+router.post("/adminverify", getuser, async (req, res) => {
+  try {
+    user_id = req.user.id;
+    let user = await User.findById(user_id).select("-password");
+    if (!user) {
+      res.status(404).json({ msg: "User not found" });
+    } else if (!user.admin) {
+      res.status(404).json({ msg: "User not found" });
+    } else {
+      res.send(user);
+    }
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+});
+
 // Endpoint for signup
 router.post(
   "/signup",
@@ -145,9 +215,7 @@ router.post("/sendmail", async (req, res) => {
     // getting user id
     const data = req.body;
     // Finding user by id without password
-    console.log(data);
     let user = await User.findById(data.user).select("-password");
-    console.log(user);
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {

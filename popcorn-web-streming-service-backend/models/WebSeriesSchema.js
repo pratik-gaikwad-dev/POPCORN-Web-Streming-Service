@@ -22,6 +22,11 @@ const WebSeriesSchema = new Schema({
     type: String,
     required: true,
   },
+  industry: {
+    type: String,
+    required: true,
+    default: "hollywood"
+  },
   description: {
     type: String,
     required: true,
