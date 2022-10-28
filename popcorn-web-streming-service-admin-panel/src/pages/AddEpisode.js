@@ -158,6 +158,7 @@ const AddEpisode = () => {
         {
           headers: {
             "Content-Type": "application/json",
+            authtoken: `${localStorage.getItem("token")}`,
           },
         }
       );

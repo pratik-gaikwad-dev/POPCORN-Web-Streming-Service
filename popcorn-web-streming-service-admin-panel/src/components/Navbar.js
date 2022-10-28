@@ -16,21 +16,24 @@ import AddIcon from "@mui/icons-material/Add";
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import MovieCreationIcon from "@mui/icons-material/MovieCreation";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
-    const navigate = useNavigate();
-    const addmovie = () => {
-        navigate("/addmovie")
-    }
-    const addwebseries = () => {
-        navigate("/addwebseries")
-    }
-    const addepisode = () => {
-        navigate("/addepisode")
-    }
-    const addseason = () => {
-        navigate("/addseason")
-    }
+  const navigate = useNavigate();
+  const addmovie = () => {
+    navigate("/addmovie");
+  };
+  const addwebseries = () => {
+    navigate("/addwebseries");
+  };
+  const addepisode = () => {
+    navigate("/addepisode");
+  };
+  const addseason = () => {
+    navigate("/addseason");
+  };
+  const changecarousel = () => {
+    navigate("/change-carousel");
+  };
   const [state, setState] = React.useState({
     left: false,
   });
@@ -109,7 +112,7 @@ const Navbar = () => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton>
+          <ListItemButton onClick={changecarousel}>
             <ListItemIcon>
               <ViewCarouselIcon
                 style={{
@@ -183,8 +186,8 @@ const Navbar = () => {
   );
   const logout = () => {
     localStorage.removeItem("token");
-    navigate("/login")
-  }
+    navigate("/login");
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ backgroundColor: "black" }}>
@@ -202,7 +205,9 @@ const Navbar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             POPCORN
           </Typography>
-          <Button onClick={logout} color="inherit">Logout</Button>
+          <Button onClick={logout} color="inherit">
+            Logout
+          </Button>
         </Toolbar>
         <Drawer
           anchor={"left"}

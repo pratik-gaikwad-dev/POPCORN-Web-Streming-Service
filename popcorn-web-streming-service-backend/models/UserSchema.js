@@ -32,6 +32,22 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  subscriber: {
+    type: Boolean,
+    default: false,
+  },
+  start_date: {
+    type: Date,
+    default: null,
+  },
+  end_date: {
+    type: Date,
+    default: null,
+  },
+  amount: {
+    type: Number,
+    default: null,
+  },
   date: {
     type: Date,
     default: Date.now(),

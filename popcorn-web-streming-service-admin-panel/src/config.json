@@ -1,6 +1,6 @@
 {
-    "api": {
-        "fileServer": "http://localhost:8000",
-        "dataserver": "http://localhost:7000"
-    }
+  "api": {
+    "fileServer": "http://localhost:8000",
+    "dataserver": "http://localhost:7000"
+  }
 }

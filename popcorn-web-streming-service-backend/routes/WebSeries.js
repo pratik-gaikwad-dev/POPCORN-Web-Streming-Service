@@ -1,34 +1,45 @@
 const express = require("express");
+const getuser = require("../middleware/getuser");
 const Episode = require("../models/EpisodesSchema");
+const User = require("../models/UserSchema");
 const Webseries = require("../models/WebSeriesSchema");
 const app = express();
 const router = express.Router();
 
-router.post("/uploadwebseries", (req, res) => {
+router.post("/uploadwebseries", getuser, async (req, res) => {
+  user_id = req.user.id;
+  let user = await User.findById(user_id).select("-password");
+  if (!user.admin) {
+    return res.status(401).json({ msg: "You are not admin" });
+  }
   try {
-    if (req.body.name === null) {
+    if (!req.body.name) {
       return res.status(400).json({ msg: "Name should not be empty" });
     }
-    if (req.body.image === null) {
+    if (!req.body.image) {
       return res.status(400).json({ msg: "Image path should not be empty" });
     }
-    if (req.body.seasons === null) {
+    if (!req.body.seasons) {
       return res.status(400).json({ msg: "Seasons should not be empty" });
     }
-    if (req.body.genre === null) {
+    if (!req.body.genre) {
       return res.status(400).json({ msg: "Genre should not be empty" });
     }
-    if (req.body.year === null) {
+    if (!req.body.year) {
       return res.status(400).json({ msg: "Year should not be empty" });
     }
-    if (req.body.description === null) {
+    if (!req.body.description) {
       return res.status(400).json({ msg: "Description should not be empty" });
     }
-    if (req.body.tags === null) {
+    if (!req.body.tags) {
       return res.status(400).json({ msg: "tags should not be empty" });
     }
-    if (req.body.slug === null) {
+    if (!req.body.slug) {
       return res.status(400).json({ msg: "slug should not be empty" });
+    }
+    const web = await Webseries.findOne({ slug: req.body.slug });
+    if (web) {
+      return res.status(400).json({ msg: "slug is used" });
     }
     const movie = new Webseries({
       name: req.body.name,
@@ -47,27 +58,32 @@ router.post("/uploadwebseries", (req, res) => {
   }
 });
 
-router.post("/uploadepisodes", async (req, res) => {
+router.post("/uploadepisodes", getuser, async (req, res) => {
+  user_id = req.user.id;
+  let user = await User.findById(user_id).select("-password");
+  if (!user.admin) {
+    return res.status(401).json({ msg: "You are not admin" });
+  }
   try {
-    if (req.body.name === null) {
+    if (!req.body.name) {
       return res.status(400).json({ msg: "Name should not be empty" });
     }
-    if (req.body.seriesname === null) {
+    if (!req.body.seriesname) {
       return res.status(400).json({ msg: "Series Name should not be empty" });
     }
-    if (req.body.image === null) {
+    if (!req.body.image) {
       return res.status(400).json({ msg: "Image path should not be empty" });
     }
-    if (req.body.video === null) {
+    if (!req.body.video) {
       return res.status(400).json({ msg: "Video should not be empty" });
     }
-    if (req.body.season === null) {
+    if (!req.body.season) {
       return res.status(400).json({ msg: "Season should not be empty" });
     }
-    if (req.body.episode === null) {
+    if (!req.body.episode) {
       return res.status(400).json({ msg: "Episode should not be empty" });
     }
-    if (req.body.slug === null) {
+    if (!req.body.slug) {
       return res.status(400).json({ msg: "slug should not be empty" });
     }
     const slug = req.body.slug;
@@ -92,9 +108,17 @@ router.post("/uploadepisodes", async (req, res) => {
   }
 });
 
-router.put("/addseason", async (req, res) => {
+router.put("/addseason", getuser, async (req, res) => {
+  user_id = req.user.id;
+  let user = await User.findById(user_id).select("-password");
+  if (!user.admin) {
+    return res.status(401).json({ msg: "You are not admin" });
+  }
   try {
     const data = req.body;
+    if (!data.name) {
+      return res.status(400).json({ msg: "Select Web Series" });
+    }
     const series = await Webseries.findOne({ name: data.name });
     series instanceof Webseries;
     let seasons = series.seasons;
@@ -114,7 +138,7 @@ router.post("/getallwebseries", (req, res) => {
       } else {
         res.send(err);
       }
-    }).sort({_id: -1});
+    }).sort({ _id: -1 });
   } catch (error) {
     res.send(err);
   }

@@ -22,7 +22,7 @@ const Carousel = (props) => {
             </ul>
           </div>
           <div className="carousel-movie-watch-button carousel-1">
-            <Button variant="contained" href="#contained-buttons">
+            <Button variant="contained" href={`/${props.type}/${props.slug}`}>
               Watch
             </Button>
           </div>

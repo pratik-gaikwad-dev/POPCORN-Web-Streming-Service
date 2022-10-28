@@ -27,23 +27,22 @@ const Login = () => {
         }
       );
       const resp = res.data;
-      if(!resp.user.verified)
-      {
-        return showMessage("error", "You need to verify your account, to verify account try to login on POPCORN.");
-
+      if (!resp.user.verified) {
+        return showMessage(
+          "error",
+          "You need to verify your account, to verify account try to login on POPCORN."
+        );
       }
-      if(resp.authtoken)
-      {
+      if (resp.authtoken) {
         localStorage.setItem("token", resp.authtoken);
-        navigate("/")
+        navigate("/");
       }
-      
     } catch (error) {
       console.log(error);
       if (error.response.status === 401) {
         showMessage("error", `${error.response.data.error}`);
       } else {
-        showMessage("error", `${error.response.data.errors[0].msg}`)
+        showMessage("error", `${error.response.data.errors[0].msg}`);
       }
     }
   };

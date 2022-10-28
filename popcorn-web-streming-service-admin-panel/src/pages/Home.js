@@ -7,7 +7,7 @@ import MessageContext from "../context/context/MessageContext";
 import "../css/Home.css";
 const Home = () => {
   const navigate = useNavigate();
-  const {showMessage} = useContext(MessageContext);
+  const { showMessage } = useContext(MessageContext);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -27,20 +27,18 @@ const Home = () => {
             }
           );
           const resp = res.data;
-          if(!resp.admin){
+          if (!resp.admin) {
             showMessage("error", "Please login with correct credentials.");
-            navigate("/login")
+            navigate("/login");
           }
         } catch (error) {
           console.log(error);
-          if(error.response.status === 401)
-          {
-            showMessage("error", `${error.response.data.error}`)
+          if (error.response.status === 401) {
+            showMessage("error", `${error.response.data.error}`);
+          } else {
+            showMessage("error", `${error.response.data.msg}`);
           }
-          else {
-            showMessage("error", `${error.response.data.msg}`)
-          }
-          navigate("/login")
+          navigate("/login");
         }
       };
       verify();

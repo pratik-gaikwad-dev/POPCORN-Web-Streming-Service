@@ -1,36 +1,32 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Carousel from "./Carousel";
 import MCarousel from "react-material-ui-carousel";
 import "../../css/Carousel.css";
 import ModeContext from "../../context/Contexts/ModeContext";
-const Carouselitems = () => {
+import axios from "axios";
+import config from "../../config.json";
+const Carouselitems = (props) => {
   const mode = useContext(ModeContext);
-  var items = [
-    {
-      name: "The Avengers",
-      genre1: "Sci-Fi",
-      genre2: "Action",
-      year: "2014",
-      image:
-        "https://wallpapers.com/images/hd/marvel-superhero-movie-avengers-3p49xboy2uzn0w1t.jpg",
-    },
-    {
-      name: "Avengers Infinity War",
-      genre1: "Sci-Fi",
-      genre2: "Action",
-      year: "2019",
-      image:
-        "https://photobest1.com/wp-content/uploads/2018/05/Avengers-Infinity-War-wallpaper-hd-01.jpg",
-    },
-    {
-      name: "Avengers End Game",
-      genre1: "Sci-Fi",
-      genre2: "Action",
-      year: "2019",
-      image:
-        "https://i.pinimg.com/originals/33/db/a5/33dba54d4bae2749ba36785a8c28c7a6.jpg",
-    },
-  ];
+  var items_p = [];
+  const [items, setItems] = useState(items_p);
+  const getCarouselItems = async () => {
+    try {
+      const res = await axios.post(
+        `${config.api.carousel}/getitems`,
+        {},
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
+      const resp = res.data;
+      setItems(resp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  getCarouselItems();
   return (
     <>
       <MCarousel
@@ -56,7 +52,7 @@ const Carouselitems = () => {
         }}
       >
         {items.map((item, i) => (
-          <Carousel key={i} item={item} />
+          <Carousel key={i} item={item} type={item.type} slug={item.slug} />
         ))}
       </MCarousel>
     </>

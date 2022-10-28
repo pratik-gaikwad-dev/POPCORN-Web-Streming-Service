@@ -144,7 +144,7 @@ const Menu = () => {
             </Link>
             <Link
               style={mode.checked === false ? darkStyles : lightStyle}
-              to="/filter/2020"
+              to={`/filter/${2020}`}
               className="sidebar-links"
             >
               <li className="menus">2020</li>

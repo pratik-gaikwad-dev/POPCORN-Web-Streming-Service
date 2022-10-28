@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const WebSeriesSchema = new Schema({
+const CarouselSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -10,28 +10,19 @@ const WebSeriesSchema = new Schema({
     type: String,
     required: true,
   },
-  seasons: {
-    type: Number,
+  genre1: {
+    type: String,
     required: true,
   },
-  genre: {
+  genre2: {
+    type: String,
+    required: true,
+  },
+  type: {
     type: String,
     required: true,
   },
   year: {
-    type: String,
-    required: true,
-  },
-  industry: {
-    type: String,
-    required: true,
-    default: "hollywood",
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  tags: {
     type: String,
     required: true,
   },
@@ -42,6 +33,6 @@ const WebSeriesSchema = new Schema({
   },
 });
 
-const Webseries = mongoose.model("webseries", WebSeriesSchema);
-Webseries.createIndexes();
-module.exports = Webseries;
+const Carousel = mongoose.model("carousel", CarouselSchema);
+Carousel.createIndexes();
+module.exports = Carousel;

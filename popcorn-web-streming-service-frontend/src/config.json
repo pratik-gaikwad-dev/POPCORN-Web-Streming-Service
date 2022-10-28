@@ -2,9 +2,16 @@
   "api": {
     "auth": "http://localhost:7000/api/auth",
     "movies": "http://localhost:7000/api/movies",
-    "webseries": "http://localhost:7000/api/webseries"
+    "webseries": "http://localhost:7000/api/webseries",
+    "carousel": "http://localhost:7000/api/carousel",
+    "filter": "http://localhost:7000/api/filter",
+    "payment": "http://localhost:7000/api/payment"
   },
   "mail": {
     "url": "http://localhost:3000/verify"
+  },
+  "payment": {
+    "key": "rzp_test_gLNr8sqIvzM92n",
+    "secret": "OoNCgzuHkCMHY1TLG7uBjKbE"
   }
 }

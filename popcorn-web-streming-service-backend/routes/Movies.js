@@ -1,33 +1,44 @@
 const express = require("express");
+const getuser = require("../middleware/getuser");
 const Movies = require("../models/MoviesSchema");
+const User = require("../models/UserSchema");
 const app = express();
 const router = express.Router();
 
-router.post("/uploadmovie", (req, res) => {
+router.post("/uploadmovie", getuser, async (req, res) => {
+  user_id = req.user.id;
+  let user = await User.findById(user_id).select("-password");
+  if (!user.admin) {
+    return res.status(401).json({ msg: "You are not admin" });
+  }
   try {
-    if (req.body.name === null) {
+    if (!req.body.name) {
       return res.status(400).json({ msg: "Name should not be empty" });
     }
-    if (req.body.image === null) {
+    if (!req.body.image) {
       return res.status(400).json({ msg: "Image path should not be empty" });
     }
-    if (req.body.video === null) {
+    if (!req.body.video) {
       return res.status(400).json({ msg: "Video path should not be empty" });
     }
-    if (req.body.genre === null) {
+    if (!req.body.genre) {
       return res.status(400).json({ msg: "Genre should not be empty" });
     }
-    if (req.body.year === null) {
+    if (!req.body.year) {
       return res.status(400).json({ msg: "Year should not be empty" });
     }
-    if (req.body.description === null) {
+    if (!req.body.description) {
       return res.status(400).json({ msg: "Description should not be empty" });
     }
-    if (req.body.tags === null) {
+    if (!req.body.tags) {
       return res.status(400).json({ msg: "tags should not be empty" });
     }
-    if (req.body.slug === null) {
+    if (!req.body.slug) {
       return res.status(400).json({ msg: "slug should not be empty" });
+    }
+    const item = await Movies.findOne({ slug: req.body.slug });
+    if (item) {
+      return res.status(401).json({ msg: "Slug already in use" });
     }
     const movie = new Movies({
       name: req.body.name,
@@ -49,13 +60,13 @@ router.post("/uploadmovie", (req, res) => {
 
 router.post("/getallmovies", (req, res) => {
   try {
-    Movies.find({}, {},(err, movies) => {
+    Movies.find({}, {}, (err, movies) => {
       if (!err) {
         res.send(movies);
       } else {
         res.send(err);
       }
-    }).sort({_id: -1});
+    }).sort({ _id: -1 });
   } catch (error) {
     res.send(error);
   }

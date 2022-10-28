@@ -16,7 +16,6 @@ const Home = (props) => {
   const movie = useContext(MovieContext);
   const webseries = useContext(WebSeriesContext);
   const mode = useContext(ModeContext);
-
   if (mode.checked === false) {
     document.body.style.backgroundColor = "#131722";
   } else {
@@ -31,6 +30,7 @@ const Home = (props) => {
   movie.getAllMovies();
   webseries.getAllWebSeries();
   webseries.getAllWebEpisodes();
+
   return (
     <>
       <Navbar showmenu={true} />

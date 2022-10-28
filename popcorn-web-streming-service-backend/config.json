@@ -9,5 +9,9 @@
   "email": {
     "id": "pratikgaikwad1004@gmail.com",
     "password": "zngnymzkgbjarexp"
+  },
+  "payment": {
+    "key": "rzp_test_gLNr8sqIvzM92n",
+    "secret": "OoNCgzuHkCMHY1TLG7uBjKbE"
   }
 }

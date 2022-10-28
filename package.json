@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fileserver": "cd popcorn-movies-server && nodemon index.js",
+    "admin_panel": "cd popcorn-web-streming-service-admin-panel && npm start",
+    "backend": "cd popcorn-web-streming-service-backend && nodemon index.js",
+    "frontend": "cd popcorn-web-streming-service-frontend && npm start"
+  }
+}

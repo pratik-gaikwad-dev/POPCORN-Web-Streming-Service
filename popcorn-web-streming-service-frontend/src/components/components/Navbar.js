@@ -1,19 +1,26 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../css/Navbar.css";
 import MenuContext from "../../context/Contexts/MenuContext";
 import { FormControlLabel, FormGroup, Switch, Typography } from "@mui/material";
 import ModeContext from "../../context/Contexts/ModeContext";
 import UserContext from "../../context/Contexts/UserContext";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import FilterContext from "../../context/Contexts/FilterContext";
 const Navbar = (props) => {
   const menu = useContext(MenuContext);
   const mode = useContext(ModeContext);
+  const { searchMovies } = useContext(FilterContext);
   const { token } = useContext(UserContext);
   let query = "";
-  const searchitem = (e) => {
+  const navigate = useNavigate();
+  const searchItems = (e) => {
+    e.preventDefault();
     let searchq = document.getElementById("search").value;
+    searchMovies(searchq);
     query = `/search/${searchq}`;
-    window.open(query, "_self");
+    navigate(query);
   };
   const lightStyle = {
     backgroundColor: "white",
@@ -98,17 +105,18 @@ const Navbar = (props) => {
         </div>
         <div className="nav-part" id="nav-part-3">
           <ul>
-            <li
-              className="nav-part-3-item"
-              id="nav-part-3-item-1"
-              style={border}
-            >
-              <input type="text" id="search" placeholder="Search..." />
-              <i
-                onClick={searchitem}
-                className="fa-solid fa-magnifying-glass"
-              ></i>
-            </li>
+            <form onSubmit={searchItems}>
+              <li
+                className="nav-part-3-item"
+                id="nav-part-3-item-1"
+                style={border}
+              >
+                <input type="text" id="search" placeholder="Search..." />
+                <IconButton type="submit" aria-label="delete">
+                  <SearchIcon />
+                </IconButton>
+              </li>
+            </form>
             <li className="nav-part-3-item">
               <i className="fa-solid fa-user fa-xl"></i>
               <div className="nav-user-dropdown">
@@ -133,7 +141,7 @@ const Navbar = (props) => {
                       </Link>
                     </div>
                     <div className="nav-user-dropdown-1">
-                      <Link className="nav-user-dropdown-link" to="/Account">
+                      <Link className="nav-user-dropdown-link" to="/account">
                         Account
                       </Link>
                     </div>

@@ -7,29 +7,14 @@ import Sidebar from "../components/Sidebar";
 import MenuContext from "../../context/Contexts/MenuContext";
 import Navbar from "../components/Navbar";
 import Card from "../components/Card";
-// import MovieContext from "../../context/Contexts/MovieContext";
-// import WebSeriesContext from "../../context/Contexts/WebSeriesContext";
 import ModeContext from "../../context/Contexts/ModeContext";
+import FilterContext from "../../context/Contexts/FilterContext";
 const Search = () => {
   const menu = useContext(MenuContext);
-  // const movie = useContext(MovieContext);
-  // const webseries = useContext(WebSeriesContext);
   const mode = useContext(ModeContext);
   const { searchquery } = useParams();
 
-  // finding series which user wants to watch
-  let watchmovie = "";
-  // if (watchmovie === null) {
-  //   watchmovie = webseries.items.find((element) => {
-  //     return element.tags.includes(searchquery);
-  //   });
-  // }
-  // if (watchmovie === null) {
-  //   watchmovie = movie.items.find((element) => {
-  //     return element.tags.includes(searchquery);
-  //   });
-  // }
-  console.log(watchmovie);
+  const { watchmovie } = useContext(FilterContext);
   let address = "address";
   const lightStyle = {
     color: "black",
@@ -51,8 +36,13 @@ const Search = () => {
         </Grid>
         {!menu.show ? (
           <Grid sm={12} xs={12} md={12} lg={9} item={true}>
-            {watchmovie === undefined ? (
-              "notfound"
+            {watchmovie.msg ? (
+              <h2
+                className="web-series-header"
+                style={mode.checked === false ? darkStyle : lightStyle}
+              >
+                {watchmovie.msg}
+              </h2>
             ) : (
               <>
                 <h2

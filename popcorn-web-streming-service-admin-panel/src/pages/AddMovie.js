@@ -41,20 +41,18 @@ const AddMovie = () => {
             }
           );
           const resp = res.data;
-          if(!resp.admin){
+          if (!resp.admin) {
             showMessage("error", "Please login with correct credentials");
-            navigate("/login")
+            navigate("/login");
           }
         } catch (error) {
           console.log(error);
-          if(error.response.status === 401)
-          {
-            showMessage("error", `${error.response.data.error}`)
+          if (error.response.status === 401) {
+            showMessage("error", `${error.response.data.error}`);
+          } else {
+            showMessage("error", `${error.response.data.msg}`);
           }
-          else {
-            showMessage("error", `${error.response.data.msg}`)
-          }
-          navigate("/login")
+          navigate("/login");
         }
       };
       verify();
@@ -173,12 +171,20 @@ const AddMovie = () => {
         {
           headers: {
             "Content-Type": "application/json",
+            authtoken: `${localStorage.getItem("token")}`,
           },
         }
       );
       const { msg } = res.data;
       showMessage("success", `${msg}`);
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.status === 401) {
+        showMessage("error", `${error.response.data.error}`);
+      }
+      if (error.response.status === 400) {
+        showMessage("error", `${error.response.data.msg}`);
+      }
+    }
   };
   return (
     <>

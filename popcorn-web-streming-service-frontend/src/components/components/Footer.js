@@ -49,13 +49,22 @@ const Footer = () => {
                 Terms and Conditions
               </Link>
             </li>
-            <li>
+            <li className="footer-right-border">
               <Link
                 to="/"
                 className="footer-links"
                 style={mode.checked === false ? darkStyle : lightStyle}
               >
                 Contact
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/pricing"
+                className="footer-links"
+                style={mode.checked === false ? darkStyle : lightStyle}
+              >
+                Pricing
               </Link>
             </li>
           </ul>

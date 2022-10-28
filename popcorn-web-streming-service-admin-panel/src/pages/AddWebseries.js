@@ -129,6 +129,7 @@ const AddWebseries = () => {
         {
           headers: {
             "Content-Type": "application/json",
+            authtoken: `${localStorage.getItem("token")}`,
           },
         }
       );

@@ -19,6 +19,7 @@ const AddSeason = () => {
       {
         headers: {
           "Content-Type": "application/json",
+          authtoken: `${localStorage.getItem("token")}`,
         },
       }
     );
@@ -46,13 +47,13 @@ const AddSeason = () => {
         console.log(element);
       }
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
   };
   return (
     <>
       <Navbar />
-        <Message />
+      <Message />
       <div className="add-season-main">
         <form
           onSubmit={onSubmitData}

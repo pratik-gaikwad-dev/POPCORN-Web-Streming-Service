@@ -1,20 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import Menu from "../components/Menu";
 import Footer from "../components/Footer";
 import Grid from "@mui/material/Grid";
-import Sidebar from "../components/Sidebar";
 import MenuContext from "../../context/Contexts/MenuContext";
 import Navbar from "../components/Navbar";
 import Card from "../components/Card";
-import MovieContext from "../../context/Contexts/MovieContext";
-import WebSeriesContext from "../../context/Contexts/WebSeriesContext";
 import ModeContext from "../../context/Contexts/ModeContext";
+import FilterContext from "../../context/Contexts/FilterContext";
 const Filter = () => {
   const menu = useContext(MenuContext);
-  const movie = useContext(MovieContext);
-  const webseries = useContext(WebSeriesContext);
   const mode = useContext(ModeContext);
+  const { presentGenre, filterMovies } = useContext(FilterContext);
   const { genre } = useParams();
   const lightStyle = {
     color: "black",
@@ -30,14 +26,10 @@ const Filter = () => {
     genreType = genreType + " " + element;
   }
   let address;
-  let items;
-  if (genre === "tv-series") {
-    items = webseries.items;
-    genreType = "TV-Series";
-    address = webseries.btnAddress;
-  } else {
-    items = movie.items;
-    address = movie.btnAddress;
+  const [items, setItems] = useState([]);
+
+  if (presentGenre !== genre) {
+    filterMovies(genre, setItems);
   }
   if (mode.checked === false) {
     document.body.style.backgroundColor = "#131722";
@@ -46,20 +38,29 @@ const Filter = () => {
   }
   return (
     <>
-      <Navbar showmenu={true} />
+      <Navbar showmenu={false} />
       <Grid container spacing={0}>
-        <Grid xs={2.5} item={true}>
-          {menu.show ? <Menu /> : <Sidebar />}
-        </Grid>
         {!menu.show ? (
-          <Grid sm={12} xs={12} md={12} lg={9} item={true}>
+          <Grid sm={12} xs={12} md={12} lg={12} item={true}>
             <h2
               className="web-series-header"
               style={mode.checked === false ? darkStyle : lightStyle}
             >
               {genreType} <hr />
             </h2>
-            <div className="movies-main">
+            <div
+              className="movies-main"
+              style={
+                items.length === 0
+                  ? { paddingBottom: "30%" }
+                  : { paddingBottom: "15%" }
+              }
+            >
+              {items.length === 0 ? (
+                <h2 style={mode.checked === false ? darkStyle : lightStyle}>
+                  No results for {genreType}
+                </h2>
+              ) : null}
               {items.map((item, key) => (
                 <Card
                   image={item.image}

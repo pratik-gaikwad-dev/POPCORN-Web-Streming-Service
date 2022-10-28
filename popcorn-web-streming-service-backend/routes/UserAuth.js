@@ -209,6 +209,37 @@ router.post("/getuser", getuser, async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+router.post("/changepassword", getuser, async (req, res) => {
+  try {
+    // getting user id
+    user_id = req.user.id;
+    const data = req.body;
+    if (!data.newpassword) {
+      return res.status(400).json({ msg: "Enter new password" });
+    }
+    if (!data.cnewpassword) {
+      return res.status(400).json({ msg: "Confirm Password" });
+    }
+    if (data.newpassword !== data.cnewpassword) {
+      return res.status(400).json({ msg: "Passwords dosen't match" });
+    }
+    // Finding user by id without password
+    let user = await User.findById(user_id);
+    if (!user) {
+      res.status(404).json({ msg: "User Not Found" });
+    } else {
+      // Encrypting Password
+      const salt = await bcrypt.genSalt(10);
+      let encryptedPassword = await bcrypt.hash(data.newpassword, salt);
+      user instanceof User;
+      user.password = encryptedPassword;
+      await user.save();
+      res.json({ msg: "Password Updated" });
+    }
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+});
 
 router.post("/sendmail", async (req, res) => {
   try {
@@ -246,7 +277,6 @@ router.post("/markverified", async (req, res) => {
   try {
     // getting user id
     const data = req.body;
-    console.log(data);
     // Finding user by id without password
     let user = await User.findOne({ authkey: data.key });
     console.log(user);
