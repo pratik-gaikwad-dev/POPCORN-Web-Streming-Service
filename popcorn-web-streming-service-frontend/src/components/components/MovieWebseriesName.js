@@ -1,5 +1,9 @@
 import React, { useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import FilterContext from "../../context/Contexts/FilterContext";
+import MessageContext from "../../context/Contexts/MessageContext";
 import ModeContext from "../../context/Contexts/ModeContext";
+import UserContext from "../../context/Contexts/UserContext";
 import "../../css/MovieWebseriesName.css";
 const MovieWebseriesName = (props) => {
   const darkStyle_2 = {
@@ -8,7 +12,48 @@ const MovieWebseriesName = (props) => {
   const lightStyle_2 = {
     backgroundColor: "#eeeff0",
   };
+  const { movieslug, seriesslug } = useParams();
   const mode = useContext(ModeContext);
+  const { showMessage } = useContext(MessageContext);
+  const { getUser } = useContext(UserContext);
+  const { addLikes, getLikes, likes, checkLike, liked } =
+    useContext(FilterContext);
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const likeItem = async () => {
+    console.log(props.id);
+    if (!token) {
+      showMessage("error", "You have to login to like a move or webseries");
+      navigate("/login");
+    } else {
+      getUser();
+      addLikes(props.id);
+    }
+  };
+  if (movieslug) {
+    getLikes(movieslug);
+    checkLike(props.id);
+    let ele = document.getElementById("likes");
+    if (ele) {
+      if (liked) {
+        ele.style.color = "#24baef";
+      } else {
+        ele.style.color = "";
+      }
+    }
+  }
+  if (seriesslug) {
+    getLikes(seriesslug);
+    checkLike(props.id);
+    let ele = document.getElementById("likes");
+    if (ele) {
+      if (liked) {
+        ele.style.color = "#24baef";
+      } else {
+        ele.style.color = "";
+      }
+    }
+  }
   return (
     <>
       <div
@@ -24,16 +69,16 @@ const MovieWebseriesName = (props) => {
         <div className="watch-movie-name name-right-side">
           <div className="watch-movie-likes">
             <i
+              onClick={likeItem}
               className="fa-solid fa-thumbs-up fa-2xl"
+              id="likes"
               style={{ cursor: "pointer" }}
             ></i>
             <br />
-            &nbsp;&nbsp;1+
+            &nbsp;&nbsp;{likes}
           </div>
           <div className="watch-movie-likes">
-            <p>
-              100<h4>Views</h4>
-            </p>
+            100<h4>Views</h4>
           </div>
         </div>
       </div>

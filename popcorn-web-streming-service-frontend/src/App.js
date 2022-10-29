@@ -20,7 +20,7 @@ import Account from "./admin/admin-pages/Account";
 import ChangePassword from "./admin/admin-pages/ChangePassword";
 import FilterStates from "./context/States/FilterStates";
 import Pricing from "./components/pages/Pricing";
-import Transactions from "./components/pages/Transactions";
+import Transactions from "./admin/admin-pages/Transactions";
 function App() {
   return (
     <MenuStates>

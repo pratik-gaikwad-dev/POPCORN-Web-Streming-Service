@@ -1,6 +1,6 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import AdminNavbar from "../../admin/admin_component/AdminNavbar";
+import AdminNavbar from "../admin_component/AdminNavbar";
 import ModeContext from "../../context/Contexts/ModeContext";
 import "../../css/Transactions.css";
 import axios from "axios";

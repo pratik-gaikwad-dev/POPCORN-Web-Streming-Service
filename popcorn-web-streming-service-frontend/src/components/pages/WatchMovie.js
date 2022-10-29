@@ -45,6 +45,7 @@ const WatchMovie = () => {
           name={watchmovie.name}
           genre={watchmovie.genre}
           description={watchmovie.description}
+          id={watchmovie._id}
         />
         <Suggetions
           items={suggentions}

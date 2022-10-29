@@ -5,6 +5,8 @@ import config from "../../config.json";
 const FilterStates = (props) => {
   const [presentGenre, setPresentGenre] = useState(null);
   const [watchmovie, setWatchmovie] = useState({});
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
   const filterMovies = async (genre, setItems) => {
     try {
       const res = await axios.post(
@@ -41,6 +43,59 @@ const FilterStates = (props) => {
       console.log(error);
     }
   };
+  const addLikes = async (id) => {
+    try {
+      const res = await axios.post(
+        `${config.api.filter}/addlike/${id}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authtoken: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const resp = await res.data;
+      console.log(resp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getLikes = async (slug) => {
+    try {
+      const res = await axios.post(
+        `${config.api.filter}/getlikes/${slug}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const resp = await res.data;
+      setLikes(resp.likes);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const checkLike = async (id) => {
+    try {
+      const res = await axios.post(
+        `${config.api.filter}/checklike/${id}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authtoken: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const resp = await res.data;
+      setLiked(resp.liked);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <FilterContext.Provider
       value={{
@@ -48,6 +103,11 @@ const FilterStates = (props) => {
         filterMovies,
         searchMovies,
         watchmovie,
+        addLikes,
+        getLikes,
+        likes,
+        liked,
+        checkLike,
       }}
     >
       {props.children}

@@ -27,6 +27,10 @@ const WebSeriesSchema = new Schema({
     required: true,
     default: "hollywood",
   },
+  likes: {
+    type: Number,
+    default: 0,
+  },
   description: {
     type: String,
     required: true,

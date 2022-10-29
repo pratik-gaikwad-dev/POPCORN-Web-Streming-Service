@@ -58,6 +58,7 @@ const WatchWebSeries = () => {
           name={watchWebSeries.name}
           genre={watchseries.genre}
           description={watchseries.description}
+          id={watchseries._id}
         />
         <div className="watch-web-season-btn">
           <SeasonButton

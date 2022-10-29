@@ -73,6 +73,7 @@ const SeriesDesc = () => {
           name={watchmovie.name}
           genre={watchmovie.genre}
           description={watchmovie.description}
+          id={watchmovie._id}
         />
         <div className="web-series">
           <div className="web-series-seasons">

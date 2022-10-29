@@ -32,7 +32,10 @@ const MovieSchema = new Schema({
   },
   industry: {
     type: String,
-    required: true,
+  },
+  likes: {
+    type: Number,
+    default: 0,
   },
   slug: {
     type: String,
