@@ -5,7 +5,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import "../../css/Account.css";
-import { TextField } from "@mui/material";
 import UserContext from "../../context/Contexts/UserContext";
 import MessageContext from "../../context/Contexts/MessageContext";
 import { useNavigate } from "react-router-dom";
@@ -41,8 +40,9 @@ const Account = () => {
     boxShadow: "gray 4px 5px 20px 5px",
   };
   const darkStyle = {
-    color: "white",
-    backgroundColor: "black",
+    color: "black",
+    backgroundColor: "white",
+    boxShadow: "#131722 4px 5px 20px 5px",
   };
   return (
     <>
@@ -58,47 +58,46 @@ const Account = () => {
             style={mode.checked === false ? darkStyle : lightStyle}
           >
             <CardContent>
+              {user.subscriber ? (
+                <>
+                  <Typography
+                    variant="h5"
+                    component="div"
+                    className="profile-content"
+                  >
+                    <h3>
+                      Subscription - {user.amount === 499 ? "Pro" : "Premium"}
+                    </h3>
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    component="div"
+                    className="profile-content"
+                  >
+                    <h3>Subscription Ends - {user.end_date.slice(0, 10)}</h3>
+                  </Typography>
+                </>
+              ) : null}
               <Typography
                 variant="h5"
                 component="div"
                 className="profile-content"
               >
-                <label htmlFor="name">Name</label>
-                <TextField
-                  fullWidth
-                  className="profile-input"
-                  id="name"
-                  value={user.name}
-                  disabled
-                />
+                <h3>Name - {user.name}</h3>
               </Typography>
               <Typography
                 variant="h5"
                 component="div"
                 className="profile-content"
               >
-                <label htmlFor="username">Username</label>
-                <TextField
-                  fullWidth
-                  className="profile-input"
-                  id="username"
-                  value={user.username}
-                  disabled
-                />
+                <h3>Username - {user.username}</h3>
               </Typography>
               <Typography
                 variant="h5"
                 component="div"
                 className="profile-content"
               >
-                <label htmlFor="email">Email</label>
-                <TextField
-                  fullWidth
-                  className="profile-input"
-                  id="email"
-                  value={user.email}
-                  disabled
-                />
+                <h3>Username - {user.email}</h3>
               </Typography>
             </CardContent>
           </Card>

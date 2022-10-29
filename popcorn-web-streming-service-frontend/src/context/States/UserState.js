@@ -6,7 +6,12 @@ import MessageContext from "../Contexts/MessageContext";
 
 const UserState = (props) => {
   const [loggedin, setLoggedin] = useState(false);
-  const [user, setUser] = useState({ name: "", email: "", username: "" });
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    username: "",
+    end_date: "",
+  });
   const { showMessage } = useContext(MessageContext);
   let data = null;
   const token = localStorage.getItem("token");

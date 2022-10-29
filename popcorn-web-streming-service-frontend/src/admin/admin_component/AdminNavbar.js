@@ -14,7 +14,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import PaymentIcon from "@mui/icons-material/Payment";
 import KeyIcon from "@mui/icons-material/Key";
 import HomeIcon from "@mui/icons-material/Home";
 import ModeContext from "../../context/Contexts/ModeContext";
@@ -32,9 +31,6 @@ const Admin_navbar = () => {
   const navigate = useNavigate();
   const profile = () => {
     navigate("/account");
-  };
-  const subscriptions = () => {
-    navigate("/account/subscriptions");
   };
   const transactions = () => {
     navigate("/account/transactions");
@@ -72,14 +68,6 @@ const Admin_navbar = () => {
               <AccountCircleIcon />
             </ListItemIcon>
             <ListItemText primary="Profile" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem>
-          <ListItemButton onClick={subscriptions}>
-            <ListItemIcon>
-              <PaymentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Subscription" />
           </ListItemButton>
         </ListItem>
         <ListItem>

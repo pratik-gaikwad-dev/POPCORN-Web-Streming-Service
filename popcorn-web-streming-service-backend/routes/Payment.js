@@ -29,6 +29,20 @@ router.post("/pay", getuser, async (req, res) => {
   }
 });
 
+router.post("/gettransactions", getuser, async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    const user = await User.findById(user_id);
+    const username = user.username;
+    console.log(username);
+    Transaction.find({ username: username }, (err, docs) => {
+      res.send(docs);
+    });
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 const getEndDate = (startDate, plan) => {
   let year = startDate.getFullYear();
   let month = startDate.getMonth() + plan + 1;
@@ -75,6 +89,20 @@ router.post("/addTransaction", getuser, async (req, res) => {
     res.send(error);
   }
 });
+
+router.post("/marksubscriberfalse", getuser, async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    const user = await User.findById(user_id);
+    user instanceof User;
+    user.subscriber = false;
+    user.save();
+    res.json({ msg: "Your subscription in ended" });
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 router.post("/verify", (req, res) => {
   let body = req.body.razorpay_order_id + "|" + req.body.razorpay_payment_id;
 

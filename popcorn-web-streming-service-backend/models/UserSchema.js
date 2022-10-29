@@ -46,7 +46,7 @@ const UserSchema = new Schema({
   },
   amount: {
     type: Number,
-    default: null,
+    default: 0,
   },
   date: {
     type: Date,

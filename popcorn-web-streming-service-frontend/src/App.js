@@ -20,6 +20,7 @@ import Account from "./admin/admin-pages/Account";
 import ChangePassword from "./admin/admin-pages/ChangePassword";
 import FilterStates from "./context/States/FilterStates";
 import Pricing from "./components/pages/Pricing";
+import Transactions from "./components/pages/Transactions";
 function App() {
   return (
     <MenuStates>
@@ -68,6 +69,11 @@ function App() {
                         exact
                         path="/account/changepassword"
                         element={<ChangePassword />}
+                      />
+                      <Route
+                        exact
+                        path="/account/transactions"
+                        element={<Transactions />}
                       />
                     </Routes>
                   </Router>
