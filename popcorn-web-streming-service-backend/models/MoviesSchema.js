@@ -30,10 +30,18 @@ const MovieSchema = new Schema({
     type: String,
     required: true,
   },
+  itemtype: {
+    type: String,
+    default: "movies",
+  },
   industry: {
     type: String,
   },
   likes: {
+    type: Number,
+    default: 0,
+  },
+  favorites: {
     type: Number,
     default: 0,
   },

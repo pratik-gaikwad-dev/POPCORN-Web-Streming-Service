@@ -34,6 +34,9 @@
   flex-wrap: wrap;
   width: 10%;
 }
+#fav {
+  font-size: 40px;
+}
 @media screen and (max-width: 1172px) {
   .movie-rating-side {
     padding: 20% 0%;

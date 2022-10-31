@@ -5,6 +5,8 @@ import MessageContext from "../../context/Contexts/MessageContext";
 import ModeContext from "../../context/Contexts/ModeContext";
 import UserContext from "../../context/Contexts/UserContext";
 import "../../css/MovieWebseriesName.css";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 const MovieWebseriesName = (props) => {
   const darkStyle_2 = {
     backgroundColor: "#1c212e",
@@ -16,24 +18,47 @@ const MovieWebseriesName = (props) => {
   const mode = useContext(ModeContext);
   const { showMessage } = useContext(MessageContext);
   const { getUser } = useContext(UserContext);
-  const { addLikes, getLikes, likes, checkLike, liked } =
-    useContext(FilterContext);
+  const {
+    addLikes,
+    getLikes,
+    likes,
+    checkLike,
+    liked,
+    addFavorite,
+    checkFavorite,
+    favorite,
+  } = useContext(FilterContext);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const likeItem = async () => {
     console.log(props.id);
     if (!token) {
-      showMessage("error", "You have to login to like a move or webseries");
+      showMessage("error", "You have to login to like a movie or webseries");
       navigate("/login");
     } else {
       getUser();
       addLikes(props.id);
     }
   };
+  const favoriteItem = async () => {
+    console.log(props.id);
+    if (!token) {
+      showMessage(
+        "error",
+        "You have to login to add in favorites a movie or webseries"
+      );
+      navigate("/login");
+    } else {
+      getUser();
+      addFavorite(props.id);
+    }
+  };
   if (movieslug) {
     getLikes(movieslug);
     checkLike(props.id);
+    checkFavorite(props.id);
     let ele = document.getElementById("likes");
+    let ele2 = document.getElementById("fav");
     if (ele) {
       if (liked) {
         ele.style.color = "#24baef";
@@ -41,16 +66,32 @@ const MovieWebseriesName = (props) => {
         ele.style.color = "";
       }
     }
+    if (ele2) {
+      if (favorite) {
+        ele2.style.color = "#24baef";
+      } else {
+        ele2.style.color = "";
+      }
+    }
   }
   if (seriesslug) {
     getLikes(seriesslug);
     checkLike(props.id);
+    checkFavorite(props.id);
     let ele = document.getElementById("likes");
+    let ele2 = document.getElementById("fav");
     if (ele) {
       if (liked) {
         ele.style.color = "#24baef";
       } else {
         ele.style.color = "";
+      }
+    }
+    if (ele2) {
+      if (favorite) {
+        ele2.style.color = "#24baef";
+      } else {
+        ele2.style.color = "";
       }
     }
   }
@@ -77,8 +118,22 @@ const MovieWebseriesName = (props) => {
             <br />
             &nbsp;&nbsp;{likes}
           </div>
-          <div className="watch-movie-likes">
-            100<h4>Views</h4>
+          <div className="watch-movie-likes add-favorite">
+            <p>
+              {!favorite ? (
+                <PlaylistAddIcon
+                  id="fav"
+                  style={{ cursor: "pointer" }}
+                  onClick={favoriteItem}
+                />
+              ) : (
+                <PlaylistAddCheckIcon
+                  id="fav"
+                  style={{ cursor: "pointer" }}
+                  onClick={favoriteItem}
+                />
+              )}
+            </p>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 const express = require("express");
 const getuser = require("../middleware/getuser");
+const FavoriteItem = require("../models/FavoriteSchema");
 const LikedItems = require("../models/LikedItems");
 const Movies = require("../models/MoviesSchema");
 const User = require("../models/UserSchema");
@@ -109,6 +110,28 @@ router.post("/checklike/:id", getuser, async (req, res) => {
     res.send(error);
   }
 });
+
+router.post("/userliked", getuser, async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    const user = await User.findById(user_id);
+    const likedMovies = await LikedItems.find({
+      liked_by: user._id,
+    });
+    const movie = await Movies.find({
+      _id: likedMovies.map((item) => item.item_id),
+    });
+    const webseries = await Webseries.find({
+      _id: likedMovies.map((item) => item.item_id),
+    });
+    let items = [];
+    movie.map((item) => items.push(item));
+    webseries.map((item) => items.push(item));
+    res.json(items);
+  } catch (error) {
+    res.send(error);
+  }
+});
 router.post("/addlike/:id", getuser, async (req, res) => {
   try {
     const user_id = req.user.id;
@@ -117,7 +140,7 @@ router.post("/addlike/:id", getuser, async (req, res) => {
       return res.status(400).send("Please enter movie id");
     }
     const movie = await Movies.findById(req.params.id);
-    console.log(true)
+    console.log(true);
     if (movie) {
       const prevItem = await LikedItems.findOne({
         item_id: movie._id,
@@ -168,6 +191,115 @@ router.post("/addlike/:id", getuser, async (req, res) => {
       });
       newItem.save();
       res.json({ liked: true });
+    }
+  } catch (error) {
+    res.send(error);
+  }
+});
+router.post("/addfavorite/:id", getuser, async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    const user = await User.findById(user_id);
+    if (!req.params.id) {
+      return res.status(400).send("Please enter movie id");
+    }
+    const movie = await Movies.findById(req.params.id);
+    console.log(true);
+    if (movie) {
+      const prevItem = await FavoriteItem.findOne({
+        item_id: movie._id,
+        favorite_of: user._id,
+      });
+      if (prevItem) {
+        await FavoriteItem.deleteOne({
+          item_id: movie._id,
+          favorite_of: user._id,
+        });
+        movie instanceof Movies;
+        movie.favorites = movie.favorites - 1;
+        movie.save();
+        return res.json({ msg: "Favorite Removed" });
+      }
+      movie instanceof Movies;
+      movie.favorites = movie.favorites + 1;
+      movie.save();
+      const newItem = await FavoriteItem.create({
+        item_id: movie._id,
+        favorite_of: user._id,
+      });
+      newItem.save();
+      res.json({ liked: true });
+    } else {
+      const webseries = await Webseries.findById(req.params.id);
+      if (!webseries) {
+        return res.status(404).send("Movie not found");
+      }
+      const prevItem = await FavoriteItem.findOne({
+        item_id: webseries._id,
+        favorite_of: user._id,
+      });
+      if (prevItem) {
+        await FavoriteItem.deleteOne({
+          item_id: webseries._id,
+          favorite_of: user._id,
+        });
+        webseries instanceof Webseries;
+        webseries.favorites = webseries.favorites - 1;
+        webseries.save();
+        return res.json({ msg: "Removed" });
+      }
+      webseries instanceof Webseries;
+      webseries.favorites = webseries.favorites + 1;
+      webseries.save();
+      const newItem = await LikedItems.create({
+        item_id: webseries._id,
+        favorite_of: user._id,
+      });
+      newItem.save();
+      res.json({ liked: true });
+    }
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.post("/userfavorite", getuser, async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    const user = await User.findById(user_id);
+    const likedMovies = await FavoriteItem.find({
+      favorite_of: user._id,
+    });
+    const movie = await Movies.find({
+      _id: likedMovies.map((item) => item.item_id),
+    });
+    const webseries = await Webseries.find({
+      _id: likedMovies.map((item) => item.item_id),
+    });
+    let items = [];
+    movie.map((item) => items.push(item));
+    webseries.map((item) => items.push(item));
+    res.json(items);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.post("/checkfavorite/:id", getuser, async (req, res) => {
+  try {
+    if (!req.params.id) {
+      return res.status(404).json({ msg: "Id not found" });
+    }
+    const user_id = req.user.id;
+    const user = await User.findById(user_id);
+    const likedItem = await FavoriteItem.findOne({
+      favorite_of: user._id,
+      item_id: req.params.id,
+    });
+    if (likedItem) {
+      return res.json({ liked: true });
+    } else {
+      return res.json({ liked: false });
     }
   } catch (error) {
     res.send(error);

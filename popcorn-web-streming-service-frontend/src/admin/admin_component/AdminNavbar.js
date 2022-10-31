@@ -18,6 +18,8 @@ import KeyIcon from "@mui/icons-material/Key";
 import HomeIcon from "@mui/icons-material/Home";
 import ModeContext from "../../context/Contexts/ModeContext";
 import ReceiptIcon from "@mui/icons-material/Receipt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 const Admin_navbar = () => {
   const mode = useContext(ModeContext);
   const lightStyle = {
@@ -37,6 +39,12 @@ const Admin_navbar = () => {
   };
   const changePass = () => {
     navigate("/account/changepassword");
+  };
+  const likedMovies = () => {
+    navigate("/account/likedmovies");
+  };
+  const favorite = () => {
+    navigate("/account/favorite");
   };
   const goHome = () => {
     navigate("/");
@@ -68,6 +76,22 @@ const Admin_navbar = () => {
               <AccountCircleIcon />
             </ListItemIcon>
             <ListItemText primary="Profile" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton onClick={favorite}>
+            <ListItemIcon>
+              <FavoriteIcon />
+            </ListItemIcon>
+            <ListItemText primary="Favorite" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton onClick={likedMovies}>
+            <ListItemIcon>
+              <ThumbUpIcon />
+            </ListItemIcon>
+            <ListItemText primary="Liked Movies" />
           </ListItemButton>
         </ListItem>
         <ListItem>

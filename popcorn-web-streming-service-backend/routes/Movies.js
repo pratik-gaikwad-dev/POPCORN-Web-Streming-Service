@@ -92,7 +92,6 @@ router.post("/getrecommendation", async (req, res) => {
       genre: data.genre,
       _id: { $ne: data.id },
     });
-    console.log(data);
     if (!movie) {
       return res.status(404).json({ msg: "Movie not found" });
     }

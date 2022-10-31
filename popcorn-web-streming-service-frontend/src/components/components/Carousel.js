@@ -7,7 +7,10 @@ const Carousel = (props) => {
       <div className="container-carousel">
         <div
           className="main-carousel"
-          style={{ backgroundImage: `url(${props.item.image})` }}
+          style={{
+            backgroundImage: `url(${props.item.image})`,
+            backgroundSize: "100% 100%",
+          }}
         >
           <div className="carousel-header carousel-1">
             <h1>{props.item.name}</h1>

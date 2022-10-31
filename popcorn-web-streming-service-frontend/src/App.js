@@ -21,6 +21,8 @@ import ChangePassword from "./admin/admin-pages/ChangePassword";
 import FilterStates from "./context/States/FilterStates";
 import Pricing from "./components/pages/Pricing";
 import Transactions from "./admin/admin-pages/Transactions";
+import LikedMovies from "./admin/admin-pages/LikedMovies";
+import Favorite from "./admin/admin-pages/Favorite";
 function App() {
   return (
     <MenuStates>
@@ -74,6 +76,16 @@ function App() {
                         exact
                         path="/account/transactions"
                         element={<Transactions />}
+                      />
+                      <Route
+                        exact
+                        path="/account/likedmovies"
+                        element={<LikedMovies />}
+                      />
+                      <Route
+                        exact
+                        path="/account/favorite"
+                        element={<Favorite />}
                       />
                     </Routes>
                   </Router>

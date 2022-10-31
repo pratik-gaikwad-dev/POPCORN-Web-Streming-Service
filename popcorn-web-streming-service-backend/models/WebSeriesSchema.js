@@ -22,6 +22,14 @@ const WebSeriesSchema = new Schema({
     type: String,
     required: true,
   },
+  itemtype: {
+    type: String,
+    default: "tv-series",
+  },
+  favorites: {
+    type: Number,
+    default: 0,
+  },
   industry: {
     type: String,
     required: true,

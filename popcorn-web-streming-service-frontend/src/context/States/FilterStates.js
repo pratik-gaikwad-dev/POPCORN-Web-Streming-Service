@@ -7,6 +7,7 @@ const FilterStates = (props) => {
   const [watchmovie, setWatchmovie] = useState({});
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
+  const [favorite, setFavorite] = useState(false);
   const filterMovies = async (genre, setItems) => {
     try {
       const res = await axios.post(
@@ -96,6 +97,78 @@ const FilterStates = (props) => {
       console.log(error);
     }
   };
+  const userLiked = async (setItems) => {
+    try {
+      const res = await axios.post(
+        `${config.api.filter}/userliked`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authtoken: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const resp = await res.data;
+      setItems(resp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const userFavorite = async (setItems) => {
+    try {
+      const res = await axios.post(
+        `${config.api.filter}/userfavorite`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authtoken: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const resp = await res.data;
+      setItems(resp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const checkFavorite = async (id) => {
+    try {
+      const res = await axios.post(
+        `${config.api.filter}/checkfavorite/${id}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authtoken: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const resp = await res.data;
+      setFavorite(resp.liked);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const addFavorite = async (id) => {
+    try {
+      const res = await axios.post(
+        `${config.api.filter}/addfavorite/${id}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authtoken: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const resp = await res.data;
+      console.log(resp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <FilterContext.Provider
       value={{
@@ -107,7 +180,12 @@ const FilterStates = (props) => {
         getLikes,
         likes,
         liked,
+        userLiked,
         checkLike,
+        userFavorite,
+        checkFavorite,
+        favorite,
+        addFavorite,
       }}
     >
       {props.children}
