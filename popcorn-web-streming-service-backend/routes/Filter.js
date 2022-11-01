@@ -34,12 +34,22 @@ router.post("/getitems/:genre", async (req, res) => {
       req.params.genre !== "hollywood" &&
       req.params.genre !== "bollywood"
     ) {
-      Movies.find(
-        { genre: { $regex: req.params.genre, $options: "i" } },
-        (err, docs) => {
-          res.send(docs);
-        }
-      );
+      // Movies.find(
+      //   { genre: { $regex: req.params.genre, $options: "i" } },
+      //   (err, docs) => {
+      //     res.send(docs);
+      //   }
+      // );
+      const movie = await Movies.find({
+        genre: { $regex: req.params.genre, $options: "i" },
+      });
+      const webseries = await Webseries.find({
+        genre: { $regex: req.params.genre, $options: "i" },
+      });
+      let items = [];
+      movie.map((item) => items.push(item));
+      webseries.map((item) => items.push(item));
+      res.send(items);
     }
   } catch (error) {
     res.send(error);

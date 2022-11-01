@@ -7,10 +7,12 @@ import AlertComp from "../components/AlertComp";
 import MessageContext from "../../context/Contexts/MessageContext";
 import config from "../../config.json";
 import UserContext from "../../context/Contexts/UserContext";
+import LoadingContext from "../../context/Contexts/LoadingContext";
 const Signup = () => {
   const mode = useContext(ModeContext);
   const message = useContext(MessageContext);
   const user = useContext(UserContext);
+  const { setProgress } = useContext(LoadingContext);
   const lightStyle = {
     backgroundColor: "#f6f7f9",
     color: "black",
@@ -59,6 +61,13 @@ const Signup = () => {
       const res = await axios.post(`${config.api.auth}/signup`, data, {
         headers: {
           "Content-Type": "application/json",
+        },
+        onUploadProgress: (progressEvent) => {
+          setProgress(
+            parseInt(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            )
+          );
         },
       });
       const resp = res.data;

@@ -7,10 +7,12 @@ import config from "../../config.json";
 import MessageContext from "../../context/Contexts/MessageContext";
 import AlertComp from "../components/AlertComp";
 import UserContext from "../../context/Contexts/UserContext";
+import LoadingContext from "../../context/Contexts/LoadingContext";
 const Login = () => {
   const mode = useContext(ModeContext);
   const message = useContext(MessageContext);
   const { setLoggedin, sendMail } = useContext(UserContext);
+  const { setProgress } = useContext(LoadingContext);
   const navigate = useNavigate();
   const lightStyle = {
     backgroundColor: "#f6f7f9",
@@ -64,6 +66,13 @@ const Login = () => {
       const res = await axios.post(`${config.api.auth}/login`, data, {
         headers: {
           "Content-Type": "application/json",
+        },
+        onUploadProgress: (progressEvent) => {
+          setProgress(
+            parseInt(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            )
+          );
         },
       });
       const resp = res.data;

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Carouselitems from "../components/Carouselitems";
 import Card from "../components/Card";
@@ -11,11 +11,14 @@ import WebSeriesContext from "../../context/Contexts/WebSeriesContext";
 import Navbar from "../components/Navbar";
 import ModeContext from "../../context/Contexts/ModeContext";
 import "../../css/Home.css";
-const Home = (props) => {
+import LoadingContext from "../../context/Contexts/LoadingContext";
+
+const Home = () => {
   const menu = useContext(MenuContext);
   const movie = useContext(MovieContext);
   const webseries = useContext(WebSeriesContext);
   const mode = useContext(ModeContext);
+  const { setProgress } = useContext(LoadingContext);
   if (mode.checked === false) {
     document.body.style.backgroundColor = "#131722";
   } else {
@@ -27,9 +30,16 @@ const Home = (props) => {
   const darkStyle = {
     color: "white",
   };
-  movie.getAllMovies();
-  webseries.getAllWebSeries();
-  webseries.getAllWebEpisodes();
+  useEffect(() => {
+    setProgress(30)
+    movie.getAllMovies();
+    setProgress(50);
+    webseries.getAllWebSeries();
+    setProgress(70);
+    webseries.getAllWebEpisodes();
+    setProgress(100)
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>

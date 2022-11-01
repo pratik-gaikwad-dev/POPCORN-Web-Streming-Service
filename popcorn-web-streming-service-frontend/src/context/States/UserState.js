@@ -11,6 +11,7 @@ const UserState = (props) => {
     email: "",
     username: "",
     end_date: "",
+    subscriber: "",
   });
   const { showMessage } = useContext(MessageContext);
   let data = null;

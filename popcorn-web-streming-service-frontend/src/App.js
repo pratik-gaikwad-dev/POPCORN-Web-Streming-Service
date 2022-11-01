@@ -23,79 +23,91 @@ import Pricing from "./components/pages/Pricing";
 import Transactions from "./admin/admin-pages/Transactions";
 import LikedMovies from "./admin/admin-pages/LikedMovies";
 import Favorite from "./admin/admin-pages/Favorite";
+import LoadingBar from "react-top-loading-bar";
+import { useContext } from "react";
+import LoadingContext from "./context/Contexts/LoadingContext";
+
 function App() {
+  const { progress, setProgress } = useContext(LoadingContext);
   return (
-    <MenuStates>
-      <MovieStates>
-        <WebSeriesStates>
-          <ModeStates>
-            <MessageState>
-              <UserState>
-                <FilterStates>
-                  <Router>
-                    <Routes>
-                      <Route exact path="/" element={<Home />} />
-                      <Route exact path="/filter/:genre" element={<Filter />} />
-                      <Route exact path="/login" element={<Login />} />
-                      <Route exact path="/signup" element={<Signup />} />
-                      <Route
-                        exact
-                        path="/search/:searchquery"
-                        element={<Search />}
-                      />
-                      <Route
-                        exact
-                        path="/movies/:movieslug"
-                        element={<WatchMovie />}
-                      />
-                      <Route
-                        exact
-                        path="/tv-series/:seriesslug"
-                        element={<SeriesDesc />}
-                      />
-                      <Route
-                        exact
-                        path="/tv-series/:seriesslug/:season"
-                        element={<SeriesDesc />}
-                      />
-                      <Route
-                        exact
-                        path="/tv-series/:seriesslug/:season/:episodename"
-                        element={<WatchWebSeries />}
-                      />
-                      <Route exact path="/verify/:key" element={<Verify />} />
-                      <Route exact path="/logout" element={<Logout />} />
-                      <Route exact path="/account" element={<Account />} />
-                      <Route exact path="/pricing" element={<Pricing />} />
-                      <Route
-                        exact
-                        path="/account/changepassword"
-                        element={<ChangePassword />}
-                      />
-                      <Route
-                        exact
-                        path="/account/transactions"
-                        element={<Transactions />}
-                      />
-                      <Route
-                        exact
-                        path="/account/likedmovies"
-                        element={<LikedMovies />}
-                      />
-                      <Route
-                        exact
-                        path="/account/favorite"
-                        element={<Favorite />}
-                      />
-                    </Routes>
-                  </Router>
-                </FilterStates>
-              </UserState>
-            </MessageState>
-          </ModeStates>
-        </WebSeriesStates>
-      </MovieStates>
-    </MenuStates>
+    <>
+      <LoadingBar progress={progress} onLoaderFinished={() => setProgress(0)} />
+      <MenuStates>
+        <MovieStates>
+          <WebSeriesStates>
+            <ModeStates>
+              <MessageState>
+                <UserState>
+                  <FilterStates>
+                    <Router>
+                      <Routes>
+                        <Route exact path="/" element={<Home />} />
+                        <Route
+                          exact
+                          path="/filter/:genre"
+                          element={<Filter />}
+                        />
+                        <Route exact path="/login" element={<Login />} />
+                        <Route exact path="/signup" element={<Signup />} />
+                        <Route
+                          exact
+                          path="/search/:searchquery"
+                          element={<Search />}
+                        />
+                        <Route
+                          exact
+                          path="/movies/:movieslug"
+                          element={<WatchMovie />}
+                        />
+                        <Route
+                          exact
+                          path="/tv-series/:seriesslug"
+                          element={<SeriesDesc />}
+                        />
+                        <Route
+                          exact
+                          path="/tv-series/:seriesslug/:season"
+                          element={<SeriesDesc />}
+                        />
+                        <Route
+                          exact
+                          path="/tv-series/:seriesslug/:season/:episodename"
+                          element={<WatchWebSeries />}
+                        />
+                        <Route exact path="/verify/:key" element={<Verify />} />
+                        <Route exact path="/logout" element={<Logout />} />
+                        <Route exact path="/account" element={<Account />} />
+                        <Route exact path="/pricing" element={<Pricing />} />
+                        <Route
+                          exact
+                          path="/account/changepassword"
+                          element={<ChangePassword />}
+                        />
+                        <Route
+                          exact
+                          path="/account/transactions"
+                          element={<Transactions />}
+                        />
+                        <Route
+                          exact
+                          path="/account/likedmovies"
+                          element={<LikedMovies />}
+                        />
+                        <Route
+                          exact
+                          path="/account/favorite"
+                          element={<Favorite />}
+                        />
+                      </Routes>
+                    </Router>
+                  </FilterStates>
+                </UserState>
+              </MessageState>
+            </ModeStates>
+          </WebSeriesStates>
+        </MovieStates>
+      </MenuStates>
+    </>
   );
 }
 

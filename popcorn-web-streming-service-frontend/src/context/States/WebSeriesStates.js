@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import WebSeriesContext from "../Contexts/WebSeriesContext";
 import axios from "axios";
 import config from "../../config.json";
+import LoadingContext from "../Contexts/LoadingContext";
 const WebSeriesStates = (props) => {
   let items_m = [];
   let episodes_w = [];
   const [episodes, setEpisodes] = useState(episodes_w);
   const [items, setItems] = useState(items_m);
+  const { setProgress } = useContext(LoadingContext);
   const getAllWebSeries = async () => {
     try {
       const res = await axios.post(
@@ -40,6 +42,7 @@ const WebSeriesStates = (props) => {
 
   const getWebseries = async (slug, setWatchmovie) => {
     try {
+      setProgress(30);
       const res = await axios.get(
         `${config.api.webseries}/getwebseriesbyslug/${slug}`,
         {},
@@ -49,8 +52,10 @@ const WebSeriesStates = (props) => {
           },
         }
       );
+      setProgress(60);
       const resp = res.data;
       setWatchmovie(resp);
+      setProgress(100);
       // console.log(resp)
     } catch (error) {
       console.log(error);
@@ -90,7 +95,6 @@ const WebSeriesStates = (props) => {
       });
       const resp = await res.data;
       setWatchmovie(resp);
-      console.log(resp);
     } catch (error) {
       console.log(error);
     }

@@ -32,11 +32,10 @@ const MovieStates = (props) => {
           },
         }
       );
-
       const resp = await res.data;
       setWatchmovie(resp);
       const res2 = await axios.post(
-        `http://localhost:7000/api/movies/getrecommendation`,
+        `${config.api.movies}/getrecommendation`,
         {
           genre: resp.genre,
           id: resp._id,

@@ -12,10 +12,11 @@ const VideoPlayer = (props) => {
   const ref = useRef();
   useEffect(() => {
     ref.current?.load();
+    getUser();
+    // eslint-disable-next-line
   }, [props]);
 
   const onPlay = () => {
-    getUser();
     const token = localStorage.getItem("token");
     const vid = document.getElementById("video-id");
     if (!token) {
@@ -26,12 +27,12 @@ const VideoPlayer = (props) => {
       if (!user.subscriber) {
         vid.pause();
         showMessage("error", "Please subscribe to enjoy movies and tv-series");
+        console.log(user.subscriber)
         navigate("/pricing");
       }
       let endDate = user.end_date.slice(0, 10);
       let eDate = new Date(endDate);
       let todayDate = new Date();
-      console.log(todayDate > eDate);
       if (todayDate > eDate) {
         const endSubscription = async () => {
           const res = await axios.post(

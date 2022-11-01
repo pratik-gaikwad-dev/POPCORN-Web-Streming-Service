@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import SeasonButton from "../components/SeasonButton";
 import SuggetionsCard from "../components/SuggetionsCard";
 import "../../css/WatchWebSeries.css";
+import LoadingContext from "../../context/Contexts/LoadingContext";
 const WatchWebSeries = () => {
   const { episodename, seriesslug, season } = useParams();
   const mode = useContext(ModeContext);
@@ -16,12 +17,15 @@ const WatchWebSeries = () => {
   const [watchWebSeries, setWatchWebSeries] = useState({});
   const [watchseries, setWatchseries] = useState({});
   const [ep, setEp] = useState([]);
+  const { setProgress } = useContext(LoadingContext);
   let seasonname;
   seasonname = season;
-  console.log(ep);
   if (episodename !== watchWebSeries.slug) {
+    setProgress(20)
     webseries.getWebseries(seriesslug, setWatchseries);
+    setProgress(60)
     webseries.getSeasonEpisodes(episodename, setWatchWebSeries);
+    setProgress(100)
   }
   if (ep.length === 0) {
     webseries.getEpisodes(

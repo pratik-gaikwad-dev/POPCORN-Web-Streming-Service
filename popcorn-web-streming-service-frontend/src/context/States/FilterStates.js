@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import FilterContext from "../Contexts/FilterContext";
 import axios from "axios";
 import config from "../../config.json";
+import LoadingContext from "../Contexts/LoadingContext";
+
 const FilterStates = (props) => {
-  const [presentGenre, setPresentGenre] = useState(null);
   const [watchmovie, setWatchmovie] = useState({});
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
   const [favorite, setFavorite] = useState(false);
+  const { setProgress } = useContext(LoadingContext);
   const filterMovies = async (genre, setItems) => {
     try {
       const res = await axios.post(
@@ -17,12 +19,17 @@ const FilterStates = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
+          onDownloadProgress: (progressEvent) => {
+            setProgress(
+              parseInt(
+                Math.round((progressEvent.loaded * 100) / progressEvent.total)
+              )
+            );
+          },
         }
       );
       const resp = await res.data;
       setItems(resp);
-      // setFilter(resp);
-      setPresentGenre(genre);
     } catch (error) {
       console.log(error);
     }
@@ -172,7 +179,6 @@ const FilterStates = (props) => {
   return (
     <FilterContext.Provider
       value={{
-        presentGenre,
         filterMovies,
         searchMovies,
         watchmovie,
