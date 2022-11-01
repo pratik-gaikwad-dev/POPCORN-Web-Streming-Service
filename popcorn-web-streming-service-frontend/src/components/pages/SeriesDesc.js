@@ -8,6 +8,7 @@ import SuggetionsCard from "../components/SuggetionsCard";
 import "../../css/SeriesDesc.css";
 import SeasonButton from "../components/SeasonButton";
 import MovieWebseriesName from "../components/MovieWebseriesName";
+import LoadingContext from "../../context/Contexts/LoadingContext";
 const SeriesDesc = () => {
   // getting parameters fron url
   const { seriesslug, season } = useParams();
@@ -15,8 +16,9 @@ const SeriesDesc = () => {
   // Using contexts
   const mode = useContext(ModeContext);
   const webseries = useContext(WebSeriesContext);
-
+  const { setProgress } = useContext(LoadingContext);
   const [watchmovie, setWatchmovie] = useState({});
+  const [prevSeason, setPrevSeason] = useState(null);
   // if (seriesslug !== watchmovie.slug) {
   useEffect(() => {
     webseries.getWebseries(seriesslug, setWatchmovie);
@@ -56,9 +58,13 @@ const SeriesDesc = () => {
     let seasonnamearr = season.split("-");
     seasonname = season;
     let seasonNo = Number(seasonnamearr[1]);
-    webseries.getEpisodes(seasonNo, watchmovie.name, setEp);
+    if (prevSeason !== seasonNo) {
+      setProgress(50);
+      webseries.getEpisodes(seasonNo, watchmovie.name, setEp);
+      setPrevSeason(seasonNo);
+      setProgress(100);
+    }
   }
-  // console.log(ep)
   return (
     <>
       <Navbar showmenu={false} />
