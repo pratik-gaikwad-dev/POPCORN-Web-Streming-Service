@@ -7,6 +7,7 @@ node_modules/
 *.jpg
 *.webp
 *.avif
+*.pdf
 /reports
 
 /.pnp
@@ -28,3 +29,8 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Allow
+!popcorn-web-streming-service-frontend/public/avtar.png
+!popcorn-web-streming-service-frontend/public/logo.png
+!popcorn-web-streming-service-frontend/public/logo512.png

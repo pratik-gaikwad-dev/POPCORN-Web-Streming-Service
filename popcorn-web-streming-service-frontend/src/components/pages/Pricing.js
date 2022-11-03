@@ -117,7 +117,7 @@ const Pricing = () => {
   };
   return (
     <>
-      <Navbar showmenu={false} />
+      <Navbar />
       {message === null ? null : (
         <AlertComp type={messageType} message={message} />
       )}

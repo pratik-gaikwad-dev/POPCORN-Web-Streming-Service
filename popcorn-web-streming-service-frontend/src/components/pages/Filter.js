@@ -2,15 +2,12 @@ import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import Grid from "@mui/material/Grid";
-import MenuContext from "../../context/Contexts/MenuContext";
 import Navbar from "../components/Navbar";
 import Card from "../components/Card";
 import ModeContext from "../../context/Contexts/ModeContext";
 import FilterContext from "../../context/Contexts/FilterContext";
 import Sidebar from "../components/Sidebar";
-import Menu from "../components/Menu";
 const Filter = () => {
-  const menu = useContext(MenuContext);
   const mode = useContext(ModeContext);
   const { filterMovies } = useContext(FilterContext);
   const { genre } = useParams();
@@ -30,9 +27,9 @@ const Filter = () => {
   }
   const [items, setItems] = useState([]);
 
-  if(genre !== prevGenre) {
+  if (genre !== prevGenre) {
     filterMovies(genre, setItems);
-    setPrevGenre(genre)
+    setPrevGenre(genre);
   }
   if (mode.checked === false) {
     document.body.style.backgroundColor = "#131722";
@@ -41,56 +38,32 @@ const Filter = () => {
   }
   return (
     <>
-      <Navbar showmenu={false} />
+      <Navbar />
       <Grid container spacing={0}>
         <Grid xs={2.5} item={true}>
-          {menu.show ? <Menu /> : <Sidebar />}
+          <Sidebar />
         </Grid>
-        {!menu.show ? (
-          <Grid sm={12} xs={12} md={12} lg={9} item={true}>
-            <h2
-              className="web-series-header"
-              style={mode.checked === false ? darkStyle : lightStyle}
-            >
-              {genreType} <hr />
-            </h2>
-            <div className="movies-main">
-              {items.map((item, key) => (
-                <Card
-                  image={item.image}
-                  genre={item.genre}
-                  year={item.year}
-                  address={`/${item.itemtype}`}
-                  slug={item.slug}
-                  name={item.name}
-                  key={key}
-                />
-              ))}
-            </div>
-          </Grid>
-        ) : (
-          <Grid sm={9} xs={9} md={9} lg={9} item={true}>
-            <h2
-              className="web-series-header"
-              style={mode.checked === false ? darkStyle : lightStyle}
-            >
-              {genreType} <hr />
-            </h2>
-            <div className="movies-main">
-              {items.map((item, key) => (
-                <Card
-                  image={item.image}
-                  genre={item.genre}
-                  year={item.year}
-                  address={`/${item.itemtype}`}
-                  slug={item.slug}
-                  name={item.name}
-                  key={key}
-                />
-              ))}
-            </div>
-          </Grid>
-        )}
+        <Grid sm={12} xs={12} md={12} lg={9} item={true}>
+          <h2
+            className="web-series-header"
+            style={mode.checked === false ? darkStyle : lightStyle}
+          >
+            {genreType} <hr />
+          </h2>
+          <div className="movies-main">
+            {items.map((item, key) => (
+              <Card
+                image={item.image}
+                genre={item.genre}
+                year={item.year}
+                address={`/${item.itemtype}`}
+                slug={item.slug}
+                name={item.name}
+                key={key}
+              />
+            ))}
+          </div>
+        </Grid>
       </Grid>
       <Footer />
     </>

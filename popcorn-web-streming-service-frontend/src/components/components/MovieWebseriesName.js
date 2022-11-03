@@ -76,8 +76,10 @@ const MovieWebseriesName = (props) => {
   }
   if (seriesslug) {
     getLikes(seriesslug);
-    checkLike(props.id);
-    checkFavorite(props.id);
+    if (token) {
+      checkLike(props.id);
+      checkFavorite(props.id);
+    }
     let ele = document.getElementById("likes");
     let ele2 = document.getElementById("fav");
     if (ele) {

@@ -19,7 +19,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import ModeContext from "../../context/Contexts/ModeContext";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 const Admin_navbar = () => {
   const mode = useContext(ModeContext);
   const lightStyle = {
@@ -125,6 +125,9 @@ const Admin_navbar = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+  const home = () => {
+    navigate("/");
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -143,13 +146,26 @@ const Admin_navbar = () => {
             <MenuIcon />
           </IconButton>
           <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+          >
+            <img
+              src="/logo512.png"
+              alt="logo"
+              height={50}
+              style={{ marginTop: "10px", cursor: "pointer" }}
+              onClick={home}
+            />
+          </Typography>
+          <Typography
             onClick={goHome}
             variant="h6"
             component="div"
             sx={{ flexGrow: 1 }}
             style={{ cursor: "pointer" }}
           >
-            POPCORN
           </Typography>
           <Button onClick={logout} color="inherit">
             Logout

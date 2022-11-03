@@ -1,7 +1,13 @@
 import React from "react";
 import "../../css/Carousel.css";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 const Carousel = (props) => {
+  const navigate = useNavigate();
+  const goMovies = (e) => {
+    e.preventDefault();
+    navigate(`/${props.type}/${props.slug}`);
+  };
   return (
     <>
       <div className="container-carousel">
@@ -25,7 +31,7 @@ const Carousel = (props) => {
             </ul>
           </div>
           <div className="carousel-movie-watch-button carousel-1">
-            <Button variant="contained" href={`/${props.type}/${props.slug}`}>
+            <Button variant="contained" onClick={goMovies}>
               Watch
             </Button>
           </div>

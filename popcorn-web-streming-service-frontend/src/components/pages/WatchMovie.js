@@ -33,7 +33,7 @@ const WatchMovie = () => {
   const suggentions = recommend;
   return (
     <>
-      <Navbar showmenu={false} />
+      <Navbar />
       <div
         className="watch-movie-container"
         style={mode.checked === false ? darkStyle : lightStyle}

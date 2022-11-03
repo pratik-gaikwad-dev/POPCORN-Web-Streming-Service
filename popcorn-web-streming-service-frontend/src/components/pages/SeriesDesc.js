@@ -6,31 +6,22 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import SuggetionsCard from "../components/SuggetionsCard";
 import "../../css/SeriesDesc.css";
-import SeasonButton from "../components/SeasonButton";
 import MovieWebseriesName from "../components/MovieWebseriesName";
 import LoadingContext from "../../context/Contexts/LoadingContext";
 const SeriesDesc = () => {
   // getting parameters fron url
-  const { seriesslug, season } = useParams();
+  const { seriesslug } = useParams();
 
   // Using contexts
   const mode = useContext(ModeContext);
   const webseries = useContext(WebSeriesContext);
   const { setProgress } = useContext(LoadingContext);
   const [watchmovie, setWatchmovie] = useState({});
-  const [prevSeason, setPrevSeason] = useState(null);
-  // if (seriesslug !== watchmovie.slug) {
+  const [clickedSeason, setClickedSeason] = useState(true);
   useEffect(() => {
     webseries.getWebseries(seriesslug, setWatchmovie);
     // eslint-disable-next-line
   }, []);
-  // }
-  // finding series which user wants to watch
-  // let watchmovie = webseries.items.find((element) => {
-  //   return element.slug === seriesslug;
-  // });
-  // console.log(watchmovie)
-  // Changing Mode dark to light or light to dark
   if (mode.checked === false) {
     document.body.style.backgroundColor = "#131722";
   } else {
@@ -49,25 +40,23 @@ const SeriesDesc = () => {
   const numberOfItems = watchmovie.seasons;
 
   // getting episodes
-  let seasonname;
   const [ep, setEp] = useState([]);
-  if (season === undefined) {
-    seasonname = "season-1";
+
+  if (clickedSeason) {
     webseries.getEpisodes(1, watchmovie.name, setEp);
-  } else {
-    let seasonnamearr = season.split("-");
-    seasonname = season;
-    let seasonNo = Number(seasonnamearr[1]);
-    if (prevSeason !== seasonNo) {
-      setProgress(50);
-      webseries.getEpisodes(seasonNo, watchmovie.name, setEp);
-      setPrevSeason(seasonNo);
-      setProgress(100);
-    }
   }
+  const changeSeason = (seasonNo) => {
+    const link = `${webseries.btnAddress}/${seriesslug}/season-${seasonNo}`;
+    console.log(link);
+    setProgress(50);
+    webseries.getEpisodes(seasonNo, watchmovie.name, setEp);
+    setClickedSeason(false);
+    console.log(ep);
+    setProgress(100);
+  };
   return (
     <>
-      <Navbar showmenu={false} />
+      <Navbar />
       <div
         className="watch-movie-container"
         style={mode.checked === false ? darkStyle : lightStyle}
@@ -85,18 +74,20 @@ const SeriesDesc = () => {
           <div className="web-series-seasons">
             {numberOfItems > 0 ? (
               [...Array(numberOfItems).keys()].map((key) => (
-                <SeasonButton
-                  season={key + 1}
+                <input
                   key={key}
-                  address={webseries.btnAddress}
-                  slug={seriesslug}
+                  className="season-button"
+                  onClick={() => changeSeason(key + 1)}
+                  type="submit"
+                  value={`SEASON ${key + 1}`}
                 />
               ))
             ) : (
-              <SeasonButton
-                season={1}
-                address={webseries.btnAddress}
-                slug={seriesslug}
+              <input
+                className="season-button"
+                onClick={() => changeSeason(1)}
+                type="submit"
+                value={`SEASON ${1}`}
               />
             )}
           </div>
@@ -114,7 +105,9 @@ const SeriesDesc = () => {
                     image={item.image}
                     name={item.name}
                     slug={item.slug}
-                    address={`${webseries.btnAddress}/${seriesslug}/${seasonname}`}
+                    address={`${
+                      webseries.btnAddress
+                    }/${seriesslug}/${`season-${item.season}`}`}
                   />
                 ))
               : null}
