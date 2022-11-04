@@ -53,6 +53,7 @@ const WatchWebSeries = () => {
           <VideoPlayer
             video={watchWebSeries.video}
             poster={watchWebSeries.image}
+            id={watchseries._id}
           />
         </div>
         <MovieWebseriesName

@@ -26,7 +26,7 @@ const WebSeriesSchema = new Schema({
     type: String,
     default: "tv-series",
   },
-  favorites: {
+  views: {
     type: Number,
     default: 0,
   },

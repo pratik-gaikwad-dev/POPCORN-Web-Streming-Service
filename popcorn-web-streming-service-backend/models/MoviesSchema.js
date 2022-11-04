@@ -41,7 +41,7 @@ const MovieSchema = new Schema({
     type: Number,
     default: 0,
   },
-  favorites: {
+  views: {
     type: Number,
     default: 0,
   },

@@ -39,7 +39,11 @@ const WatchMovie = () => {
         style={mode.checked === false ? darkStyle : lightStyle}
       >
         <div className="watch-movie-poster">
-          <VideoPlayer video={watchmovie.video} poster={watchmovie.image} />
+          <VideoPlayer
+            video={watchmovie.video}
+            poster={watchmovie.image}
+            id={watchmovie._id}
+          />
         </div>
         <MovieWebseriesName
           name={watchmovie.name}

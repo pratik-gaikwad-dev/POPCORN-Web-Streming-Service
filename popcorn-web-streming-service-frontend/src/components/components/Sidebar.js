@@ -46,16 +46,6 @@ const Menu = () => {
                 <i className="fa-solid fa-eye"></i>&nbsp;&nbsp;&nbsp;Most Viewed
               </Link>
             </li>
-            <li className="menus">
-              <Link
-                style={mode.checked === false ? darkStyles : lightStyle}
-                to="/filter/most-favorite"
-                className="sidebar-links"
-              >
-                <i className="fa-solid fa-heart"></i>&nbsp;&nbsp;&nbsp;Most
-                Favorite
-              </Link>
-            </li>
           </ul>
         </div>
         <div className="menu-part-2">

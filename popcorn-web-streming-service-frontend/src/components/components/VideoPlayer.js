@@ -1,21 +1,29 @@
 import axios from "axios";
-import React, { useContext, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import MessageContext from "../../context/Contexts/MessageContext";
 import UserContext from "../../context/Contexts/UserContext";
 import "../../css/VideoPlayer.css";
 import config from "../../config.json";
+import FilterContext from "../../context/Contexts/FilterContext";
 const VideoPlayer = (props) => {
   const navigate = useNavigate();
   const { showMessage } = useContext(MessageContext);
   const { getUser, user } = useContext(UserContext);
+  const { addView } = useContext(FilterContext);
+  const { seriesslug } = useParams();
   const ref = useRef();
   useEffect(() => {
     ref.current?.load();
     getUser();
     // eslint-disable-next-line
   }, [props]);
-
+  const [viewCounted, setViewCounted] = useState(false);
+  const [currentSeries, setCurrentSeries] = useState(null);
+  if (currentSeries !== seriesslug) {
+    setViewCounted(false);
+    setCurrentSeries(seriesslug);
+  }
   const onPlay = () => {
     const token = localStorage.getItem("token");
     const vid = document.getElementById("video-id");
@@ -27,8 +35,12 @@ const VideoPlayer = (props) => {
       if (!user.subscriber) {
         vid.pause();
         showMessage("error", "Please subscribe to enjoy movies and tv-series");
-        console.log(user.subscriber)
+        console.log(user.subscriber);
         navigate("/pricing");
+      }
+      if (!viewCounted) {
+        addView(props.id);
+        setViewCounted(true);
       }
       let endDate = user.end_date.slice(0, 10);
       let eDate = new Date(endDate);

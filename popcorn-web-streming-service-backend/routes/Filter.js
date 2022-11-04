@@ -32,14 +32,10 @@ router.post("/getitems/:genre", async (req, res) => {
       req.params.genre !== "movies" &&
       req.params.genre !== "tv-series" &&
       req.params.genre !== "hollywood" &&
-      req.params.genre !== "bollywood"
+      req.params.genre !== "bollywood" &&
+      req.params.genre !== "most-liked" &&
+      req.params.genre !== "most-viewed"
     ) {
-      // Movies.find(
-      //   { genre: { $regex: req.params.genre, $options: "i" } },
-      //   (err, docs) => {
-      //     res.send(docs);
-      //   }
-      // );
       const movie = await Movies.find({
         genre: { $regex: req.params.genre, $options: "i" },
       });
@@ -49,6 +45,43 @@ router.post("/getitems/:genre", async (req, res) => {
       let items = [];
       movie.map((item) => items.push(item));
       webseries.map((item) => items.push(item));
+      res.send(items);
+    }
+    if (req.params.genre === "most-viewed") {
+      const movie = await Movies.find({});
+      const webseries = await Webseries.find({});
+      let items = [];
+      movie.map((item) => items.push(item));
+      webseries.map((item) => items.push(item));
+      function compare(a, b) {
+        if (a.views < b.views) {
+          return 1;
+        }
+        if (a.views > b.views) {
+          return -1;
+        }
+        return 0;
+      }
+      items.sort(compare);
+      res.send(items);
+    }
+    if (req.params.genre === "most-liked") {
+      const movie = await Movies.find({});
+      const webseries = await Webseries.find({});
+      let items = [];
+      movie.map((item) => items.push(item));
+      webseries.map((item) => items.push(item));
+      // sort by likes
+      function compare(a, b) {
+        if (a.likes < b.likes) {
+          return 1;
+        }
+        if (a.likes > b.likes) {
+          return -1;
+        }
+        return 0;
+      }
+      items.sort(compare);
       res.send(items);
     }
   } catch (error) {
@@ -311,6 +344,30 @@ router.post("/checkfavorite/:id", getuser, async (req, res) => {
     } else {
       return res.json({ liked: false });
     }
+  } catch (error) {
+    res.send(error);
+  }
+});
+router.post("/addview/:id", getuser, async (req, res) => {
+  try {
+    if (!req.params.id) {
+      return res.status(404).json({ msg: "Id not found" });
+    }
+    const movie = await Movies.findById(req.params.id);
+    if (!movie) {
+      const webseries = await Webseries.findById(req.params.id);
+      if (!webseries) {
+        return res.status(404).send("Movie not found");
+      }
+      webseries instanceof Webseries;
+      webseries.views = webseries.views + 1;
+      webseries.save();
+      return res.send("View added");
+    }
+    movie instanceof Movies;
+    movie.views = movie.views + 1;
+    movie.save();
+    res.send("view added");
   } catch (error) {
     res.send(error);
   }

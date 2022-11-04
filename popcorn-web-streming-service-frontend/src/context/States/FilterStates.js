@@ -11,6 +11,7 @@ const FilterStates = (props) => {
   const [favorite, setFavorite] = useState(false);
   const { setProgress } = useContext(LoadingContext);
   const filterMovies = async (genre, setItems) => {
+    console.log(genre);
     try {
       const res = await axios.post(
         `${config.api.filter}/getitems/${genre}`,
@@ -176,6 +177,24 @@ const FilterStates = (props) => {
       console.log(error);
     }
   };
+  const addView = async (id) => {
+    try {
+      const res = await axios.post(
+        `${config.api.filter}/addview/${id}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authtoken: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const resp = res.data;
+      console.log(resp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <FilterContext.Provider
       value={{
@@ -192,6 +211,7 @@ const FilterStates = (props) => {
         checkFavorite,
         favorite,
         addFavorite,
+        addView,
       }}
     >
       {props.children}

@@ -191,8 +191,6 @@ router.post("/getepisode", async (req, res) => {
   try {
     const data = req.body;
     const movie = await Episode.findOne({ slug: data.slug });
-    console.log(data);
-    console.log(movie);
     if (!movie) {
       return res.status(404).json({ msg: "Web Series not found" });
     }

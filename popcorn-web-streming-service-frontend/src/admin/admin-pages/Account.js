@@ -97,7 +97,7 @@ const Account = () => {
                 component="div"
                 className="profile-content"
               >
-                <h3>Username - {user.email}</h3>
+                <h3>Email - {user.email}</h3>
               </Typography>
             </CardContent>
           </Card>

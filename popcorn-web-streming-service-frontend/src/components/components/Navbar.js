@@ -101,6 +101,9 @@ const Navbar = () => {
   const contact = () => {
     navigate("/contact");
   };
+  const pricing = () => {
+    navigate("/pricing");
+  };
   const [state, setState] = useState({
     left: false,
   });
@@ -155,7 +158,7 @@ const Navbar = () => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={home}>
+          <ListItemButton onClick={pricing}>
             <ListItemIcon>
               <AttachMoneyIcon />
             </ListItemIcon>
