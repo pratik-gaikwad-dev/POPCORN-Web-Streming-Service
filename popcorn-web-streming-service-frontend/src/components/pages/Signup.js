@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../../css/Login.css";
+import "../../css/Signup.css";
 import ModeContext from "../../context/Contexts/ModeContext";
 import axios from "axios";
 import AlertComp from "../components/AlertComp";
@@ -13,12 +14,13 @@ const Signup = () => {
   const message = useContext(MessageContext);
   const user = useContext(UserContext);
   const { setProgress } = useContext(LoadingContext);
+  const navigate = useNavigate();
   const lightStyle = {
     backgroundColor: "#f6f7f9",
     color: "black",
   };
   const darkStyle = {
-    backgroundColor: "black",
+    backgroundColor: "#131722",
     color: "white",
   };
 
@@ -28,21 +30,26 @@ const Signup = () => {
   const backLight = {
     color: "black",
   };
-  const inputLight = {
-    border: "1px solid black",
-    backgroundColor: "white",
-  };
-  const inputDark = {
-    border: "1px solid white",
-    backgroundColor: "white",
-  };
+  // const inputLight = {
+  //   border: "1px solid black",
+  //   backgroundColor: "white",
+  // };
+  // const inputDark = {
+  //   border: "1px solid white",
+  //   backgroundColor: "white",
+  // };
 
   if (mode.checked === false) {
     document.body.style.backgroundColor = "#131722";
   } else {
     document.body.style.backgroundColor = "#fff";
   }
-
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+    // eslint-disable-next-line
+  }, []);
   const onSignup = async (e) => {
     e.preventDefault();
     const name = document.getElementById("signup-name").value;
@@ -90,10 +97,58 @@ const Signup = () => {
       }
     }
   };
+  const onChange = (e) => {
+    setCredeintials({ ...credeintials, [e.target.name]: e.target.value });
+  };
 
+  const [credeintials, setCredeintials] = useState({ email: "", password: "" });
+  const onLogin = async (e) => {
+    e.preventDefault();
+    console.log(credeintials)
+    const data = {
+      email: credeintials.email,
+      password: credeintials.password,
+    };
+    try {
+      const res = await axios.post(`${config.api.auth}/login`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        onUploadProgress: (progressEvent) => {
+          setProgress(
+            parseInt(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            )
+          );
+        },
+      });
+      const resp = res.data;
+      console.log(resp);
+      if (resp.user.verified) {
+        navigate("/");
+        localStorage.setItem("token", resp.authtoken);
+        user.setLoggedin(true);
+      } else {
+        localStorage.setItem("token", resp.authtoken);
+        localStorage.setItem("key", resp.user.authkey);
+        localStorage.setItem("id", resp.userid);
+        user.sendMail();
+        message.showMessage(
+          "error",
+          "Your account is not verified, please check mail to verify."
+        );
+      }
+    } catch (error) {
+      if (error.response.data.error) {
+        message.showMessage("error", `${error.response.data.error}`);
+      } else {
+        message.showMessage("error", `${error.response.data.errors[0].msg}`);
+      }
+    }
+  };
   return (
     <>
-      <div className="login-main signup-container">
+      {/* <div className="login-main signup-container">
         {message.message === null ? null : (
           <AlertComp type={message.messageType} message={message.message} />
         )}
@@ -176,6 +231,113 @@ const Signup = () => {
             </div>
           </div>
         </form>
+        <Link
+          to="/"
+          className="back-login"
+          style={mode.checked === false ? backDark : backLight}
+        >
+          <i className="fa-solid fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Back
+        </Link>
+      </div> */}
+      {message.message === null ? null : (
+        <AlertComp type={message.messageType} message={message.message} />
+      )}
+      <div
+        className="signup-container"
+        style={mode.checked === false ? darkStyle : lightStyle}
+      >
+        <div
+          className="signup-main"
+          style={mode.checked === false ? darkStyle : lightStyle}
+        >
+          <input type="checkbox" id="chk" aria-hidden="true" />
+
+          <div className="signup">
+            <form onSubmit={onSignup}>
+              <label
+                className="signup-label"
+                htmlFor="chk"
+                aria-hidden="true"
+                style={mode.checked === false ? darkStyle : lightStyle}
+              >
+                Sign up
+              </label>
+              <input
+                className="signup-input"
+                type="text"
+                id="signup-name"
+                placeholder="Name"
+                required
+              />
+              <input
+                className="signup-input"
+                type="text"
+                id="signup-username"
+                placeholder="User name"
+                required
+              />
+              <input
+                className="signup-input"
+                type="email"
+                id="signup-email"
+                placeholder="Email"
+                required
+              />
+              <input
+                type="password"
+                className="signup-input"
+                id="signup-password"
+                placeholder="Password"
+                required
+              />
+              <input
+                type="password"
+                className="signup-input"
+                id="signup-password-confirm"
+                placeholder="Confirm Password"
+                required
+              />
+              <button type="submit" className="signup-button">
+                Sign up
+              </button>
+            </form>
+          </div>
+
+          <div
+            className="login"
+            style={mode.checked === false ? lightStyle : darkStyle}
+          >
+            <form onSubmit={onLogin}>
+              <label
+                className="signup-label"
+                htmlFor="chk"
+                aria-hidden="true"
+                style={mode.checked === false ? backLight : backDark}
+              >
+                Login
+              </label>
+              <input
+                className="signup-input"
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={onChange}
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                className="signup-input"
+                placeholder="Password"
+                onChange={onChange}
+                required
+              />
+              <button className="signup-button">Login</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div className="back-login-div">
         <Link
           to="/"
           className="back-login"

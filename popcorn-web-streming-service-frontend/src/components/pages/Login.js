@@ -19,7 +19,7 @@ const Login = () => {
     color: "black",
   };
   const darkStyle = {
-    backgroundColor: "black",
+    backgroundColor: "#131722",
     color: "white",
   };
 
@@ -29,14 +29,14 @@ const Login = () => {
   const backLight = {
     color: "black",
   };
-  const inputLight = {
-    border: "1px solid black",
-    backgroundColor: "white",
-  };
-  const inputDark = {
-    border: "1px solid white",
-    backgroundColor: "white",
-  };
+  // const inputLight = {
+  //   border: "1px solid black",
+  //   backgroundColor: "white",
+  // };
+  // const inputDark = {
+  //   border: "1px solid white",
+  //   backgroundColor: "white",
+  // };
 
   if (mode.checked === false) {
     document.body.style.backgroundColor = "#131722";
@@ -99,9 +99,56 @@ const Login = () => {
       }
     }
   };
+  const onSignup = async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("signup-name").value;
+    const email = document.getElementById("signup-email").value;
+    const username = document.getElementById("signup-username").value;
+    const password = document.getElementById("signup-password").value;
+    const cpassword = document.getElementById("signup-password-confirm").value;
+    const data = {
+      name: name,
+      email: email,
+      username: username,
+      password: password,
+      passwordConfirm: cpassword,
+    };
+    try {
+      const res = await axios.post(`${config.api.auth}/signup`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        onUploadProgress: (progressEvent) => {
+          setProgress(
+            parseInt(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            )
+          );
+        },
+      });
+      const resp = res.data;
+      console.log(resp);
+      localStorage.setItem("token", resp.authtoken);
+      localStorage.setItem("key", resp.authkey);
+      localStorage.setItem("id", resp.userid);
+      sendMail();
+      if (resp.authtoken && resp.authkey) {
+        message.showMessage(
+          "success",
+          "We have sent you a verification email, Please verify your account."
+        );
+      }
+    } catch (error) {
+      if (error.response.data.error) {
+        message.showMessage("error", `${error.response.data.error}`);
+      } else {
+        message.showMessage("error", `${error.response.data.errors[0].msg}`);
+      }
+    }
+  };
   return (
     <>
-      <div className="login-main">
+      {/* <div className="login-main">
         {message.message === null ? null : (
           <AlertComp type={message.messageType} message={message.message} />
         )}
@@ -161,6 +208,115 @@ const Login = () => {
             </div>
           </div>
         </form>
+        <Link
+          to="/"
+          className="back-login"
+          style={mode.checked === false ? backDark : backLight}
+        >
+          <i className="fa-solid fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Back
+        </Link>
+      </div> */}
+      {message.message === null ? null : (
+        <AlertComp type={message.messageType} message={message.message} />
+      )}
+      <div
+        className="signup-container"
+        style={mode.checked === false ? darkStyle : lightStyle}
+      >
+        <div
+          className="signup-main"
+          style={mode.checked === false ? darkStyle : lightStyle}
+        >
+          <input type="checkbox" id="chk" aria-hidden="true" />
+
+          <div className="signup">
+            <form onSubmit={onLogin}>
+              <label
+                className="signup-label"
+                htmlFor="chk"
+                aria-hidden="true"
+                style={mode.checked === false ? darkStyle : lightStyle}
+              >
+                Login
+              </label>
+              <input
+                className="signup-input"
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={onChange}
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                className="signup-input"
+                placeholder="Password"
+                onChange={onChange}
+                required
+              />
+              <button type="submit" className="signup-button">
+                Login
+              </button>
+            </form>
+          </div>
+
+          <div
+            className="login"
+            style={mode.checked === false ? lightStyle : darkStyle}
+          >
+            <form onSubmit={onSignup}>
+              <label
+                className="signup-label"
+                htmlFor="chk"
+                aria-hidden="true"
+                style={mode.checked === false ? backLight : backDark}
+              >
+                Sign Up
+              </label>
+              <input
+                className="signup-input"
+                type="text"
+                id="signup-name"
+                placeholder="Name"
+                required
+              />
+              <input
+                className="signup-input"
+                type="text"
+                id="signup-username"
+                placeholder="User name"
+                required
+              />
+              <input
+                className="signup-input"
+                type="email"
+                id="signup-email"
+                placeholder="Email"
+                required
+              />
+              <input
+                type="password"
+                className="signup-input"
+                id="signup-password"
+                placeholder="Password"
+                required
+              />
+              <input
+                type="password"
+                className="signup-input"
+                id="signup-password-confirm"
+                placeholder="Confirm Password"
+                required
+              />
+              <button type="submit" className="signup-button">
+                Sign up
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div className="back-login-div">
         <Link
           to="/"
           className="back-login"
